@@ -1,0 +1,56 @@
+# AARR Configuration
+# Agentic Adaptive Repair Robot
+
+# Simulation settings
+simulation:
+  seed: 42              # Random seed for reproducibility
+  gui: true             # Show PyBullet GUI window
+  time_step: 0.004167   # 1/240 seconds
+
+# Robot configuration
+robot:
+  model: kuka_iiwa
+  end_effector_link: 6
+
+# Camera settings
+camera:
+  width: 640
+  height: 480
+  fov: 60
+  near: 0.1
+  far: 10.0
+  position: [0.5, 0.0, 1.2]
+  target: [0.5, 0.0, 0.2]
+
+# Vision detection thresholds (HSV: H=0-180, S=0-255, V=0-255)
+vision:
+  rust_hsv_lower: [0, 100, 100]
+  rust_hsv_upper: [10, 255, 255]
+  crack_hsv_lower: [0, 0, 0]
+  crack_hsv_upper: [180, 255, 50]
+  dent_hsv_lower: [100, 100, 100]
+  dent_hsv_upper: [130, 255, 255]
+  min_contour_area: 100
+  morphology_kernel_size: 5
+
+# LLM Agent configuration
+agent:
+  provider: openai      # Changed from "ollama" to use GPT-4o
+  model: gpt-4o         # Fast and smart
+  timeout: 30           # Seconds before fallback
+  max_retries: 3        # Retry attempts before fallback
+
+# Safety parameters
+safety:
+  collision_distance: 0.01  # Minimum clearance (meters)
+  singularity_threshold: 100
+  workspace_bounds:
+    x: [0.2, 0.8]
+    y: [-0.4, 0.4]
+    z: [0.05, 0.6]
+
+# Path planning
+path:
+  max_velocity: 0.1         # m/s
+  max_acceleration: 0.05    # m/s²
+  collision_check_step: 5   # Check every N waypoints

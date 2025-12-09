@@ -1,0 +1,36 @@
+# Environment
+.env
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+*.egg-info/
+dist/
+build/
+
+# Data
+data/sessions/
+*.log
+
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Personal/Interview
+docs/INTERVIEW.md
+CLAUDE.md
+GEMINI.md
+*.personal.md

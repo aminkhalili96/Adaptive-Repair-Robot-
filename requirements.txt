@@ -1,0 +1,31 @@
+# Core simulation
+pybullet>=3.2.5
+numpy>=1.24.0
+
+# Computer vision
+opencv-python>=4.8.0
+
+# AI/LLM
+langchain>=0.2.0
+langgraph>=0.2.0
+langchain-openai>=0.1.0
+langchain-ollama>=0.1.0
+langsmith>=0.1.0
+
+# Math/transforms
+scipy>=1.11.0
+
+# Visualization
+matplotlib>=3.7.0
+plotly>=5.18.0
+trimesh>=4.0.0
+
+# Web UI
+streamlit>=1.28.0
+
+# Utilities
+python-dotenv>=1.0.0
+pyyaml>=6.0.0
+
+# Testing
+pytest>=7.4.0
