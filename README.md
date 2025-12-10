@@ -47,6 +47,44 @@ AARR demonstrates a complete **Scan-to-Path** automation workflow for MRO (Maint
 
 ---
 
+## LLM & AI Integration
+
+AARR leverages multiple AI/ML technologies in a layered architecture:
+
+### Core AI Stack
+
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Orchestration** | LangGraph | Multi-agent workflow with Supervisor → Tools pattern |
+| **Reasoning** | GPT-4o / Qwen3 | Decision-making, repair planning, conversational UI |
+| **Vision** | GPT-4o Vision | Multimodal defect classification (returns structured JSON) |
+| **Voice** | OpenAI Whisper | Speech-to-text for hands-free commands |
+| **Prediction** | RandomForest | Repair time & consumable estimation |
+| **Segmentation** | SAM (MobileSAM) | Zero-shot defect masking |
+
+### Agent Tools (17 total)
+
+The Supervisor Agent can call these tools via function calling:
+
+- `classify_defect_visual` — GPT-4o Vision structured classification
+- `generate_quality_report` — LLM-generated audit documentation
+- `recall_past_repairs` — Vector similarity search on repair history
+- `simulate_scenario` — What-if comparisons for planning
+- `review_plan_safety` — Secondary LLM safety validation
+- `analyze_visual` — Free-form visual inspection
+- `consult_manual` — RAG retrieval from knowledge base
+- Plus 10 more for camera control, scanning, execution...
+
+### Design Philosophy
+
+> **Eyes vs Brain**: Classical CV/ML for precise data extraction, LLMs for high-level reasoning.
+
+- Vision models extract structured defect data (type, position, severity)
+- LLMs reason about repair strategy, safety, and user interaction
+- Human-in-the-loop approval required before any execution
+
+---
+
 ## Key Features
 
 | Feature | Description |
