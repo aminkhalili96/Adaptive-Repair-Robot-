@@ -16,36 +16,102 @@ from dataclasses import dataclass
 from src.visualization.mesh_loader import MeshData
 
 
-# ============ INDUSTRIAL METAL MATERIAL ============
+# ============ PROAI AESTHETIC MATERIAL ============
+# Studio Lighting with Strong Shadows for Contrast
+# Lower ambient = darker shadows, higher specular = metallic shine
 METAL_LIGHTING = dict(
-    ambient=0.4,       # Bright enough to see in shadows
-    diffuse=0.6,       # Shows surface curves well
-    roughness=0.2,     # Slightly polished metal
-    specular=0.8,      # High shine for metallic look
-    fresnel=0.1        # Subtle edge rim lighting
+    ambient=0.35,      # LOW ambient for strong shadows
+    diffuse=0.5,       # Good directional lighting
+    roughness=0.1,     # Smooth machined surface
+    specular=1.8,      # HIGH shine for metal
+    fresnel=3.0        # Strong rim lighting to separate from background
 )
 
-# Factory-style top-down lighting (nothing in total darkness)
-LIGHT_POSITION = dict(x=1, y=1, z=5)
+# Overhead studio lighting
+LIGHT_POSITION = dict(x=0, y=0, z=10)
 
-# Color palette
+# ProAI Color Palette (High Contrast Industrial)
 COLORS = {
-    'steel_grey': 'rgb(169, 169, 169)',       # Standard steel color
-    'defect_rust': 'rgb(255, 69, 0)',         # Safety Orange/Rust
-    'defect_high': 'rgb(244, 67, 54)',        # Red for severe
-    'defect_medium': 'rgb(255, 152, 0)',      # Orange for medium
-    'defect_low': 'rgb(76, 175, 80)',         # Green for low
-    'toolpath': 'rgb(33, 150, 243)',          # Blue toolpath
-    'highlight': 'rgb(255, 215, 0)',          # Gold highlight
+    # Darker base for contrast against white UI
+    'satin_aluminum': 'rgb(140, 145, 150)',   # Medium gunmetal
+    'light_steel': 'rgb(140, 145, 150)',      # Medium gunmetal
+    'steel_grey': 'rgb(120, 120, 120)',       # Darker gunmetal #787878
+    'gunmetal': 'rgb(100, 100, 100)',         # Dark accent
+    
+    # Defects - Alert Red for contrast on dark surface
+    'defect_rust': 'rgb(239, 68, 68)',        # Brighter red (#EF4444)
+    'defect_high': 'rgb(220, 38, 38)',        # Alert Red
+    'defect_medium': 'rgb(251, 146, 60)',     # Bright Orange
+    'defect_low': 'rgb(34, 197, 94)',         # Bright green
+    
+    # Accents
+    'toolpath': 'rgb(59, 130, 246)',          # Bright blue
+    'highlight': 'rgb(250, 204, 21)',         # Amber
+    
+    # Scene
+    'grid': 'rgb(229, 229, 229)',             # Subtle grid #E5E5E5
+    'bg_transparent': 'rgba(0, 0, 0, 0)',     # Transparent
 }
+
+
+def generate_reflection_gradient(
+    vertices: np.ndarray,
+    base_color: str = 'rgb(240, 242, 245)',    # Satin aluminum
+    highlight_tint: str = 'rgb(255, 255, 255)', # Pure white highlight
+    gradient_axis: int = 2  # Z-axis for top-down reflection
+) -> List[str]:
+    """
+    Generate subtle reflection gradient for ProAI Aesthetic.
+    
+    Creates a soft white-to-aluminum gradient that simulates
+    soft studio lighting on satin aluminum surface.
+    
+    Args:
+        vertices: Nx3 vertex positions
+        base_color: Satin aluminum base
+        highlight_tint: White highlight for top surfaces
+        gradient_axis: Axis for gradient (0=X, 1=Y, 2=Z)
+        
+    Returns:
+        List of RGB color strings per vertex
+    """
+    n_verts = len(vertices)
+    if n_verts == 0:
+        return []
+    
+    # Get position along gradient axis
+    positions = vertices[:, gradient_axis]
+    min_pos, max_pos = positions.min(), positions.max()
+    
+    if max_pos - min_pos < 1e-6:
+        return [base_color] * n_verts
+    
+    # Normalize to 0-1
+    t = (positions - min_pos) / (max_pos - min_pos)
+    
+    # Parse colors
+    base_rgb = _parse_rgb(base_color)
+    highlight_rgb = _parse_rgb(highlight_tint)
+    
+    colors = []
+    for i in range(n_verts):
+        # Interpolate: bottom = base, top = subtle white highlight
+        factor = t[i] * 0.15  # Very subtle effect (15% max)
+        r = int(base_rgb[0] * (1 - factor) + highlight_rgb[0] * factor)
+        g = int(base_rgb[1] * (1 - factor) + highlight_rgb[1] * factor)
+        b = int(base_rgb[2] * (1 - factor) + highlight_rgb[2] * factor)
+        colors.append(f'rgb({r}, {g}, {b})')
+    
+    return colors
 
 
 def generate_vertex_colors(
     vertices: np.ndarray,
     defects: List[Dict],
-    base_color: str = 'rgb(169, 169, 169)',
-    defect_color: str = 'rgb(255, 69, 0)',
-    defect_radius: float = 0.03
+    base_color: str = 'rgb(140, 145, 150)',   # Medium gunmetal for contrast
+    defect_color: str = 'rgb(239, 68, 68)',   # Bright red
+    defect_radius: float = 0.03,
+    defect_opacity: float = 0.9              # High visibility
 ) -> List[str]:
     """
     Generate vertex colors with defects "painted" onto the mesh.
@@ -121,8 +187,65 @@ def _parse_rgb(color_str: str) -> Tuple[int, int, int]:
         parts = color_str.replace('rgb(', '').replace(')', '').split(',')
         return (int(parts[0].strip()), int(parts[1].strip()), int(parts[2].strip()))
     except:
-        return (169, 169, 169)  # Default grey
+        return (112, 112, 112)  # Default gunmetal
 
+
+def create_ground_shadow(
+    mesh_data,
+    shadow_color: str = 'rgba(0, 0, 0, 0.15)',
+    offset_z: float = -0.02,
+    scale: float = 1.2
+) -> go.Mesh3d:
+    """
+    Create a fake ground shadow plane beneath the mesh.
+    
+    This creates a visual grounding effect, making the object
+    appear to sit in a physical space rather than floating.
+    
+    Args:
+        mesh_data: MeshData object for bounds calculation
+        shadow_color: RGBA color for shadow (semi-transparent black)
+        offset_z: Z offset below mesh minimum
+        scale: Scale factor for shadow size
+        
+    Returns:
+        Plotly Mesh3d trace for shadow plane
+    """
+    bounds = mesh_data.bounds
+    center = (bounds[0] + bounds[1]) / 2
+    size = bounds[1] - bounds[0]
+    
+    # Shadow at bottom of mesh
+    z_pos = bounds[0][2] + offset_z
+    
+    # Create elliptical shadow (oval plane)
+    n_points = 32
+    theta = np.linspace(0, 2 * np.pi, n_points)
+    x = center[0] + (size[0] * scale / 2) * np.cos(theta)
+    y = center[1] + (size[1] * scale / 2) * np.sin(theta)
+    z = np.full_like(x, z_pos)
+    
+    # Add center point for fan triangulation
+    x = np.append(x, center[0])
+    y = np.append(y, center[1])
+    z = np.append(z, z_pos)
+    
+    # Create triangles (fan from center)
+    center_idx = n_points
+    i_vals = [center_idx] * n_points
+    j_vals = list(range(n_points))
+    k_vals = [(i + 1) % n_points for i in range(n_points)]
+    
+    return go.Mesh3d(
+        x=x, y=y, z=z,
+        i=i_vals, j=j_vals, k=k_vals,
+        color=shadow_color,
+        opacity=0.15,
+        flatshading=True,
+        hoverinfo='skip',
+        showlegend=False,
+        name='Shadow'
+    )
 
 def create_industrial_mesh_trace(
     mesh_data: MeshData,
@@ -180,16 +303,17 @@ def create_industrial_layout(
     transparent_bg: bool = True
 ) -> Dict[str, Any]:
     """
-    Create Plotly layout for industrial visualization.
+    Create Plotly layout for ProAI Aesthetic visualization.
     
     Features:
-    - Transparent background (blends with dark UI)
+    - Transparent background (blends with light UI)
+    - Hidden axes (clean, minimal look)
     - aspectmode='data' (no stretching)
     - Proper camera positioning
     
     Args:
         mesh_data: MeshData for bounds calculation
-        transparent_bg: Use transparent background
+        transparent_bg: Use transparent background (default True)
         
     Returns:
         Layout dict for go.Figure
@@ -202,21 +326,29 @@ def create_industrial_layout(
     # Camera distance to fill view
     distance = size * 2.0
     
-    bg_color = 'rgba(0,0,0,0)' if transparent_bg else '#0D0D0D'
+    # ProAI: default to transparent for light UI integration
+    bg_color = 'rgba(0,0,0,0)' if transparent_bg else COLORS.get('bg_transparent', 'rgba(0,0,0,0)')
+    grid_color = COLORS.get('grid', 'rgb(229, 229, 229)')
     
     return dict(
         scene=dict(
             xaxis=dict(
                 visible=False,
                 showbackground=False,
+                gridcolor=grid_color,
+                zerolinecolor=grid_color,
             ),
             yaxis=dict(
                 visible=False,
                 showbackground=False,
+                gridcolor=grid_color,
+                zerolinecolor=grid_color,
             ),
             zaxis=dict(
                 visible=False,
                 showbackground=False,
+                gridcolor=grid_color,
+                zerolinecolor=grid_color,
             ),
             aspectmode='data',
             bgcolor=bg_color,
@@ -230,7 +362,7 @@ def create_industrial_layout(
         plot_bgcolor=bg_color,
         margin=dict(l=0, r=0, t=0, b=0),
         showlegend=False,
-        uirevision='industrial',  # Preserve camera on rerender
+        uirevision='proai',  # Preserve camera on rerender
     )
 
 

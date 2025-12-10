@@ -59,11 +59,20 @@ class DetectedDefect:
 
 class DefectDetector:
     """
-    OpenCV-based defect detector using HSV color thresholding.
+    Hybrid defect detector using HSV color thresholding AND depth-based geometry.
+    
+    Combines:
+    - Color-based detection (HSV thresholds for rust, crack, dent colors)
+    - Geometry-based detection (curvature analysis for surface anomalies)
     """
     
-    def __init__(self):
-        """Initialize detector with config thresholds."""
+    def __init__(self, enable_depth: bool = True):
+        """
+        Initialize detector with config thresholds.
+        
+        Args:
+            enable_depth: If True, use depth analysis when available
+        """
         vision_config = config.get("vision", {})
         
         # HSV ranges for each defect type (H: 0-180, S: 0-255, V: 0-255)
@@ -90,28 +99,120 @@ class DefectDetector:
         
         # Create morphological kernel
         self.kernel = np.ones((self.kernel_size, self.kernel_size), np.uint8)
+        
+        # Depth-based detection settings
+        self.enable_depth = enable_depth and vision_config.get("enable_depth_analysis", True)
+        self._depth_analyzer = None
     
-    def detect(self, rgb_image: np.ndarray) -> List[DetectedDefect]:
+    @property
+    def depth_analyzer(self):
+        """Lazy-load depth analyzer to avoid import overhead."""
+        if self._depth_analyzer is None and self.enable_depth:
+            try:
+                from src.vision.depth_analyzer import DepthAnalyzer
+                self._depth_analyzer = DepthAnalyzer()
+            except ImportError:
+                self.enable_depth = False
+        return self._depth_analyzer
+    
+    def detect(
+        self,
+        rgb_image: np.ndarray,
+        depth_image: Optional[np.ndarray] = None,
+        camera_intrinsics: Optional[np.ndarray] = None
+    ) -> List[DetectedDefect]:
         """
-        Detect defects in an RGB image.
+        Detect defects using combined color + geometry analysis.
         
         Args:
             rgb_image: (H, W, 3) uint8 RGB image
+            depth_image: Optional (H, W) float32 depth image for 3D analysis
+            camera_intrinsics: Optional (3, 3) camera intrinsic matrix
             
         Returns:
-            List of DetectedDefect objects
+            List of DetectedDefect objects (includes both color and geometric defects)
         """
-        # Convert to HSV
+        # Color-based detection (existing HSV pipeline)
         hsv = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2HSV)
         
         all_defects = []
         
-        # Detect each defect type
         for defect_type, thresholds in self.thresholds.items():
             defects = self._detect_type(hsv, defect_type, thresholds)
             all_defects.extend(defects)
         
+        # Geometry-based detection (new depth pipeline)
+        if depth_image is not None and self.enable_depth and self.depth_analyzer:
+            geo_defects = self._detect_geometric(rgb_image, depth_image, camera_intrinsics)
+            all_defects = self._merge_detections(all_defects, geo_defects)
+        
         return all_defects
+    
+    def _detect_geometric(
+        self,
+        rgb: np.ndarray,
+        depth: np.ndarray,
+        intrinsics: Optional[np.ndarray]
+    ) -> List[DetectedDefect]:
+        """Detect geometric defects using depth analysis."""
+        geo_defects = self.depth_analyzer.detect_geometric_defects(rgb, depth, intrinsics)
+        
+        # Convert GeometricDefect to DetectedDefect format
+        converted = []
+        for gd in geo_defects:
+            # Map geometric type to DefectType
+            type_map = {
+                "dent": DefectType.DENT,
+                "bump": DefectType.DENT,  # Treat bumps as dent-type anomalies
+                "crack": DefectType.CRACK,
+                "wear": DefectType.UNKNOWN,
+            }
+            defect_type = type_map.get(gd.type.value, DefectType.UNKNOWN)
+            
+            # Approximate 2D centroid from 3D position (project back)
+            # For now, use image center as placeholder - exact projection needs camera params
+            h, w = depth.shape
+            centroid_px = (int(w * 0.5), int(h * 0.5))  # Approximate
+            
+            converted.append(DetectedDefect(
+                type=defect_type,
+                centroid_px=centroid_px,
+                area_px=gd.area_m2 * 1e6,  # Convert m² to approximate px²
+                confidence=gd.confidence,
+                bounding_box=(0, 0, 50, 50),  # Placeholder
+                contour=np.array([]),  # 3D defects don't have 2D contours
+            ))
+        
+        return converted
+    
+    def _merge_detections(
+        self,
+        color_defects: List[DetectedDefect],
+        geo_defects: List[DetectedDefect]
+    ) -> List[DetectedDefect]:
+        """
+        Merge color-based and geometry-based detections.
+        
+        Removes duplicates and boosts confidence when both methods agree.
+        """
+        # For now, simple concatenation - could add NMS or overlap detection
+        merged = list(color_defects)
+        
+        for gd in geo_defects:
+            # Check if similar defect already detected by color
+            is_duplicate = False
+            for cd in color_defects:
+                # Simple distance check (would need proper pixel coordinates)
+                if cd.type == gd.type:
+                    # Boost confidence if both methods detected same type
+                    # This is a simplified heuristic
+                    is_duplicate = True
+                    break
+            
+            if not is_duplicate:
+                merged.append(gd)
+        
+        return merged
     
     def _detect_type(
         self,

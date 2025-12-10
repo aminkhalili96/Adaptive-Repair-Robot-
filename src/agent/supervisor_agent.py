@@ -54,6 +54,38 @@ except ImportError:
     HAS_CODE_INTERPRETER = False
     print("Warning: Code interpreter not available.")
 
+# Import LLM defect classifier for multimodal diagnosis
+try:
+    from src.vision.llm_defect_classifier import classify_defect_from_image, is_classifier_available
+    HAS_LLM_CLASSIFIER = True
+except ImportError:
+    HAS_LLM_CLASSIFIER = False
+    print("Warning: LLM defect classifier not available.")
+
+# Import report generator for quality reports
+try:
+    from src.agent.report_generator import generate_quality_report as gen_report, is_generator_available
+    HAS_REPORT_GENERATOR = True
+except ImportError:
+    HAS_REPORT_GENERATOR = False
+    print("Warning: Report generator not available.")
+
+# Import memory bank for past repair recall
+try:
+    from src.agent.memory_bank import store_repair, recall_similar_repairs, get_memory_stats
+    HAS_MEMORY_BANK = True
+except ImportError:
+    HAS_MEMORY_BANK = False
+    print("Warning: Memory bank not available.")
+
+# Import safety reviewer for plan validation
+try:
+    from src.agent.safety_reviewer import review_plan_safety, is_reviewer_available
+    HAS_SAFETY_REVIEWER = True
+except ImportError:
+    HAS_SAFETY_REVIEWER = False
+    print("Warning: Safety reviewer not available.")
+
 
 # ============ SYSTEM PROMPT ============
 SUPERVISOR_SYSTEM_PROMPT = """You are AARR (Advanced Adaptive Repair Robot), an advanced industrial repair assistant.
@@ -296,6 +328,93 @@ TOOLS = [
                 "required": ["pattern_description", "generated_code"]
             }
         }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "analyze_3d_surface",
+            "description": "Perform true 3D surface analysis using depth sensor and point cloud processing. Detects geometric defects like dents, bumps, and surface irregularities that color-based detection might miss. Use when user asks about 'surface analysis', '3D scan', 'geometric defects', 'depth analysis', or wants more detailed inspection.",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "classify_defect_visual",
+            "description": "Use GPT-4o Vision to perform structured defect classification on the current view. Returns JSON with defect type, severity (1-10), recommended action, and confidence. Use when user asks 'classify this', 'what type of defect is this', 'diagnose this', or wants structured analysis rather than free-form description.",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "generate_quality_report",
+            "description": "Generate a formal quality assurance report after repairs are completed. Creates an audit-ready markdown document with part info, defects found, actions taken, and compliance status. Use when user asks for 'report', 'documentation', 'quality report', 'audit record', or after repair execution.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "operator_notes": {
+                        "type": "string",
+                        "description": "Optional notes from the operator to include in the report"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "recall_past_repairs",
+            "description": "Search the memory bank for similar past repairs to inform current decisions. Use when user asks 'what did we do before', 'similar repairs', 'past experience', or when planning repairs to leverage historical data.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Search query describing the situation, e.g., 'rust on steel turbine'"
+                    }
+                },
+                "required": ["query"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "simulate_scenario",
+            "description": "Simulate a hypothetical scenario with modified parameters. Use when user asks 'what if', 'hypothetically', 'if the defect was larger', or wants to compare different approaches.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "modification": {
+                        "type": "string",
+                        "description": "Description of the modification to simulate, e.g., 'defect 2x larger' or 'different material'"
+                    }
+                },
+                "required": ["modification"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "review_plan_safety",
+            "description": "Perform a safety review of the current repair plan before execution. Checks workspace bounds, RPM limits, tool compatibility. Use before executing repairs or when user asks about 'safety', 'is it safe', 'validate plan'.",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        }
     }
 ]
 
@@ -517,6 +636,230 @@ class ToolExecutor:
         else:
             return f"❌ **Path Generation Failed**: {result.error_message}\n\nPlease check the code and try again."
     
+    def analyze_3d_surface(self) -> str:
+        """
+        Perform 3D surface analysis using depth data.
+        
+        Uses the DepthAnalyzer to detect geometric defects via point cloud
+        and curvature analysis.
+        """
+        try:
+            from src.vision.depth_analyzer import DepthAnalyzer, GeometricDefectType
+            analyzer = DepthAnalyzer()
+        except ImportError:
+            return "📊 3D surface analysis not available. Please install open3d."
+        
+        # Signal to UI that we want to run 3D analysis
+        self.ui_commands.append(UICommand(
+            type="TRIGGER_3D_SCAN",
+            data={"analyzer_config": analyzer.get_status()}
+        ))
+        
+        # Build response based on current defects (will be updated by UI after scan)
+        if not self.defects:
+            return "📊 **3D Surface Analysis Initiated**\n\n" \
+                   "Capturing depth data and generating point cloud...\n" \
+                   "Results will include:\n" \
+                   "- Surface curvature map\n" \
+                   "- Geometric anomaly detection (dents, bumps)\n" \
+                   "- Depth deviation analysis\n\n" \
+                   "⏳ Processing..."
+        
+        # If defects already exist, provide enhanced analysis
+        geo_count = sum(1 for d in self.defects if d.get("geometric", False))
+        color_count = len(self.defects) - geo_count
+        
+        return f"📊 **3D Surface Analysis Results**\n\n" \
+               f"- Color-based defects: **{color_count}**\n" \
+               f"- Geometry-based defects: **{geo_count}**\n" \
+               f"- Total: **{len(self.defects)}**\n\n" \
+               f"3D analysis uses point cloud curvature to detect dents and bumps " \
+               f"that color-based detection might miss."
+    
+    def classify_defect_visual(self) -> str:
+        """
+        Trigger structured defect classification using GPT-4o Vision.
+        
+        Returns JSON-structured classification with type, severity, action.
+        """
+        if not HAS_LLM_CLASSIFIER:
+            return "🔬 LLM defect classifier not available. Please install dependencies."
+        
+        if not is_classifier_available():
+            return "🔬 LLM classifier not configured. Please set OPENAI_API_KEY."
+        
+        # Signal to UI that we want to capture and classify
+        self.ui_commands.append(UICommand(
+            type="CLASSIFY_DEFECT_VISUAL",
+            data={"mode": "structured"}
+        ))
+        
+        return "🔬 **Structured Defect Classification Initiated**\n\n" \
+               "Capturing current view for GPT-4o Vision analysis...\n" \
+               "Results will include:\n" \
+               "- Defect type classification\n" \
+               "- Severity score (1-10)\n" \
+               "- Recommended repair action\n" \
+               "- Confidence level\n\n" \
+               "⏳ Processing..."
+    
+    def generate_quality_report_tool(self, operator_notes: str = "") -> str:
+        """
+        Generate a quality assurance report for the current repair session.
+        
+        Returns formatted markdown report suitable for auditing.
+        """
+        if not HAS_REPORT_GENERATOR:
+            return "📋 Report generator not available. Please install dependencies."
+        
+        # Build repair log from current state
+        repair_log = {
+            "actions_count": len(self.plans),
+            "total_duration": "N/A",
+            "status": "Completed" if self.workflow_step >= 4 else "In Progress",
+            "completed": self.workflow_step >= 4
+        }
+        
+        # Build part info (would come from session state in real app)
+        part_info = {
+            "part_id": f"PART-{id(self) % 10000:04d}",
+            "mesh_name": "Industrial Part",
+            "material": "Steel"
+        }
+        
+        report = gen_report(
+            repair_log=repair_log,
+            defects=self.defects,
+            part_info=part_info,
+            operator_notes=operator_notes
+        )
+        
+        # Store report for UI to download
+        self.ui_commands.append(UICommand(
+            type="QUALITY_REPORT_GENERATED",
+            data={
+                "content": report.to_markdown(),
+                "part_id": report.part_id,
+                "is_compliant": report.is_compliant
+            }
+        ))
+        
+        return f"📋 **Quality Report Generated**\n\n" \
+               f"{report.get_summary()}\n\n" \
+               f"The full report is available for download in the sidebar."
+    
+    def recall_past_repairs_tool(self, query: str) -> str:
+        """
+        Search the memory bank for similar past repairs.
+        """
+        if not HAS_MEMORY_BANK:
+            return "🧠 Memory bank not available. Please install dependencies."
+        
+        results = recall_similar_repairs(query, top_k=3)
+        
+        if not results:
+            return "🧠 **No Past Repairs Found**\n\n" \
+                   "No similar repairs in memory. This may be a new type of repair.\n" \
+                   "After completing this repair, it will be stored for future reference."
+        
+        lines = ["🧠 **Past Repair Experiences**\n"]
+        for r in results:
+            lines.append(r.get_summary())
+            lines.append("")
+        
+        lines.append("\n_Use this information to inform your current repair approach._")
+        
+        return "\n".join(lines)
+    
+    def simulate_scenario_tool(self, modification: str) -> str:
+        """
+        Simulate a hypothetical scenario with modified parameters.
+        """
+        if not self.defects:
+            return "🔮 No defects to simulate. Please scan the part first."
+        
+        # Parse the modification and apply it
+        mod_lower = modification.lower()
+        
+        # Create hypothetical defects
+        hypo_defects = []
+        for d in self.defects:
+            hypo = dict(d)
+            
+            # Apply size modifications
+            if "2x" in mod_lower or "double" in mod_lower or "twice" in mod_lower:
+                if "area" in hypo:
+                    hypo["area"] = hypo["area"] * 2
+                if "severity" in hypo and isinstance(hypo["severity"], int):
+                    hypo["severity"] = min(10, hypo["severity"] + 2)
+            elif "half" in mod_lower or "0.5x" in mod_lower:
+                if "area" in hypo:
+                    hypo["area"] = hypo["area"] * 0.5
+                if "severity" in hypo and isinstance(hypo["severity"], int):
+                    hypo["severity"] = max(1, hypo["severity"] - 1)
+            
+            # Apply material changes
+            if "aluminum" in mod_lower:
+                hypo["material"] = "aluminum"
+            elif "composite" in mod_lower:
+                hypo["material"] = "composite"
+            elif "steel" in mod_lower:
+                hypo["material"] = "steel"
+            
+            hypo_defects.append(hypo)
+        
+        # Calculate time estimates for both scenarios
+        original_time = len(self.defects) * 60  # Simple estimate
+        hypo_time = original_time
+        
+        if "2x" in mod_lower or "double" in mod_lower:
+            hypo_time = original_time * 1.8
+        elif "half" in mod_lower:
+            hypo_time = original_time * 0.6
+        
+        return f"🔮 **What-If Simulation**\n\n" \
+               f"**Scenario**: {modification}\n\n" \
+               f"| Metric | Original | Hypothetical |\n" \
+               f"|--------|----------|-------------|\n" \
+               f"| Defects | {len(self.defects)} | {len(hypo_defects)} |\n" \
+               f"| Est. Time | {original_time:.0f}s | {hypo_time:.0f}s |\n" \
+               f"| Time Diff | - | {'+' if hypo_time > original_time else ''}{hypo_time - original_time:.0f}s |\n\n" \
+               f"_This is a simulation. Actual results may vary._"
+    
+    def review_plan_safety_tool(self) -> str:
+        """
+        Perform a safety review of the current repair plan.
+        """
+        if not HAS_SAFETY_REVIEWER:
+            return "🛡️ Safety reviewer not available. Please install dependencies."
+        
+        if not self.defects and not self.plans:
+            return "🛡️ No plan to review. Please generate a repair plan first."
+        
+        # Build plan for review
+        plan = {
+            "defects": self.defects,
+            "plans": self.plans,
+            "workflow_step": self.workflow_step,
+            "material": "steel",  # Default, would come from session
+            "tool": "grinder",
+            "rpm": 2500
+        }
+        
+        result = review_plan_safety(plan)
+        
+        # Store review result for UI
+        self.ui_commands.append(UICommand(
+            type="SAFETY_REVIEW_COMPLETE",
+            data={
+                "approved": result.approved,
+                "risk_level": result.risk_level,
+                "warnings": result.warnings
+            }
+        ))
+        
+        return f"🛡️ **Safety Review**\n\n{result.get_summary()}"
+    
     def execute_tool(self, name: str, arguments: Dict) -> str:
         """Execute a tool by name with arguments."""
         tool_map = {
@@ -531,6 +874,12 @@ class ToolExecutor:
             "consult_manual": self.consult_manual,
             "optimize_repair_sequence": self.optimize_repair_sequence,
             "generate_custom_path": self.generate_custom_path,
+            "analyze_3d_surface": self.analyze_3d_surface,
+            "classify_defect_visual": self.classify_defect_visual,
+            "generate_quality_report": self.generate_quality_report_tool,
+            "recall_past_repairs": self.recall_past_repairs_tool,
+            "simulate_scenario": self.simulate_scenario_tool,
+            "review_plan_safety": self.review_plan_safety_tool,
         }
         
         if name in tool_map:

@@ -14,12 +14,13 @@ from typing import Tuple, List
 
 
 # ============ LIGHTING CONFIG ============
+# Studio Lighting for High Contrast against light UI
 METAL_LIGHTING = dict(
-    ambient=0.4,
-    diffuse=0.6,
-    roughness=0.2,
-    specular=0.8,
-    fresnel=0.1
+    ambient=0.35,     # LOW ambient for strong shadows
+    diffuse=0.5,
+    roughness=0.1,    # Smooth machined surface
+    specular=1.8,     # HIGH shine for metal
+    fresnel=3.0       # Strong rim lighting
 )
 
 LIGHT_POSITION = dict(x=1, y=1, z=5)
@@ -34,11 +35,12 @@ def interpolate_color(base: Tuple[int, int, int], target: Tuple[int, int, int], 
     return f'rgb({r}, {g}, {b})'
 
 
-STEEL_GREY = (169, 169, 169)
-RUST_ORANGE = (255, 69, 0)
-HEAT_STRESS_RED = (220, 20, 60)
-HEAT_STRESS_PURPLE = (138, 43, 226)
-CORROSION_BROWN = (139, 69, 19)
+# Darker base color for contrast against white UI
+STEEL_GREY = (140, 145, 150)  # Medium gunmetal (was 200,200,205)
+RUST_ORANGE = (239, 68, 68)   # Brighter red
+HEAT_STRESS_RED = (220, 38, 38)
+HEAT_STRESS_PURPLE = (168, 85, 247)  # Brighter purple
+CORROSION_BROWN = (180, 83, 9)       # Brighter brown
 
 
 # ============ 1. FLANGED PIPE ============

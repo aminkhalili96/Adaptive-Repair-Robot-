@@ -393,13 +393,13 @@ def create_aerospace_bracket() -> trimesh.Trimesh:
     
     for x, y in boss_positions:
         # Raised boss
-        boss = trimesh.creation.cylinder(radius=0.008, height=0.003, sections=24)
+        boss = trimesh.creation.cylinder(radius=0.008, height=0.003, sections=64)
         boss.apply_translation([x, y, base_thickness + 0.0015])
         parts.append(boss)
     
     # Wall mounting bosses
     for z in [base_thickness + 0.025, base_thickness + 0.06, base_thickness + 0.085]:
-        boss = trimesh.creation.cylinder(radius=0.006, height=0.003, sections=24)
+        boss = trimesh.creation.cylinder(radius=0.006, height=0.003, sections=64)
         rot = trimesh.transformations.rotation_matrix(np.pi/2, [0, 1, 0])
         boss.apply_transform(rot)
         boss.apply_translation([wall_thickness + 0.0015, base_width/2, z])
@@ -411,7 +411,7 @@ def create_aerospace_bracket() -> trimesh.Trimesh:
     parts.append(top_flange)
     
     # Corner fillet (quarter cylinder)
-    fillet = trimesh.creation.cylinder(radius=0.012, height=base_width - 0.02, sections=32)
+    fillet = trimesh.creation.cylinder(radius=0.012, height=base_width - 0.02, sections=64)
     rot = trimesh.transformations.rotation_matrix(np.pi/2, [1, 0, 0])
     fillet.apply_transform(rot)
     fillet.apply_translation([wall_thickness + 0.006, base_width/2, base_thickness + 0.008])

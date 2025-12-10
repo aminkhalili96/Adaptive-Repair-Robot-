@@ -56,6 +56,8 @@ AARR demonstrates a complete **Scan-to-Path** automation workflow for MRO (Maint
 | **Multi-Agent Chat** | 🤖 Supervisor, 👁️ Inspector, 🔧 Engineer team |
 | **Voice Control** | 🎤 Push-to-speak commands via OpenAI Whisper |
 | **Interactive Segmentation** | ✂️ Zero-shot defect masking using SAM (Segment Anything) |
+| **3D Depth Analysis** | 📊 RGBD point cloud + curvature-based geometric defect detection |
+| **Texture-to-3D Mapping** | 🎨 UV-based defect projection from textures to 3D vertices |
 | **Real Computer Vision** | HSV detection with morphological cleanup |
 | **Surface Normal Alignment** | Tool perpendicular to curved surfaces |
 | **LLM Agent** | LangGraph + Qwen3/GPT-4 for repair planning |
@@ -63,6 +65,11 @@ AARR demonstrates a complete **Scan-to-Path** automation workflow for MRO (Maint
 | **Human-in-the-Loop** | Mandatory approval before execution |
 | **Multi-Defect TSP** | Optimized visit order (NN + 2-opt) |
 | **Demo Mode** | Procedural meshes with vertex-colored defects |
+| **Multimodal Diagnosis** | 🔬 GPT-4o Vision returns structured defect classifications |
+| **Quality Reports** | 📋 LLM-generated audit-ready documentation |
+| **Memory Bank** | 🧠 Vector store recalls similar past repairs |
+| **What-If Simulation** | 🔮 Compare hypothetical scenarios |
+| **Safety Reviewer** | 🛡️ Second LLM pass validates plans before execution |
 
 ---
 
@@ -143,6 +150,7 @@ robotic_ai/
 
 | Document | Contents |
 |----------|----------|
+| [PRD.md](docs/PRD.md) | Product requirements, features, success metrics |
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | System diagrams, data flow |
 | [MATH.md](docs/MATH.md) | Coordinate frames, surface normals |
 | [PROMPTS.md](docs/PROMPTS.md) | LLM prompting strategy |
@@ -150,6 +158,10 @@ robotic_ai/
 | [SIM_TO_REAL.md](docs/SIM_TO_REAL.md) | Real-world deployment |
 | [ML_PREDICTOR.md](docs/ML_PREDICTOR.md) | ML model architecture, API reference |
 | [VOICE_CONTROL.md](docs/VOICE_CONTROL.md) | Voice input, Whisper API integration |
+| [3D_VISION.md](docs/3D_VISION.md) | RGBD depth analysis, point cloud defect detection |
+| [LLM_INTEGRATION.md](docs/LLM_INTEGRATION.md) | All LLM features: multimodal diagnosis, memory, safety |
+| [DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | Interview demo walkthrough, talking points |
+| [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common issues and solutions |
 
 ---
 
@@ -197,6 +209,7 @@ safety:
 - [ ] Force-feedback during execution
 - [ ] Multi-robot coordination
 - [x] ML predictor for repair time estimation
+- [x] 3D RGBD depth-based defect detection
 
 ---
 

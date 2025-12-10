@@ -4,14 +4,14 @@ import plotly.graph_objects as go
 
 def generate_demo_part():
     """
-    Generates a high-quality 3D mesh of a curved surface with a "painted" defect,
-    styled with industrial-like lighting.
+    Generates a high-quality 3D mesh of a curved car hood surface
+    with ProAI Aesthetic styling (satin aluminum, high-res geometry).
 
     Returns:
-        go.Figure: A Plotly Figure object containing the configured go.Mesh3d trace.
+        go.Mesh3d: A Plotly Mesh3d trace configured for premium industrial look.
     """
-    # 1. Procedural Geometry (The Car Hood)
-    grid_size = 50
+    # 1. HIGH-RES Procedural Geometry (100x100 grid for smooth curves)
+    grid_size = 100  # Increased from 50 for smoother appearance
     x_range = np.linspace(-1, 1, grid_size)
     y_range = np.linspace(-1, 1, grid_size)
     X, Y = np.meshgrid(x_range, y_range)
@@ -36,22 +36,31 @@ def generate_demo_part():
     indices = np.array(indices)
     i_vals, j_vals, k_vals = indices[:, 0], indices[:, 1], indices[:, 2]
 
-    # 2. "Heatmap" Defect Painting
-    defect_center = np.array([0.2, 0.2, -0.1 * (0.2**2 + 0.2**2)]) # Center on the surface
+    # 2. ProAI Defect Painting (Alert Red on Satin Aluminum)
+    defect_center = np.array([0.2, 0.2, -0.1 * (0.2**2 + 0.2**2)])
     defect_radius = 0.25
     
-    # Default color: Metallic Silver
-    vertex_colors = np.full((len(vertices), 3), 192)
+    # Satin Aluminum base color (#F0F2F5)
+    satin_aluminum = [240, 242, 245]
+    vertex_colors = np.full((len(vertices), 3), satin_aluminum)
 
     # Find vertices within the defect radius
     distances = np.linalg.norm(vertices - defect_center, axis=1)
-    defect_indices = np.where(distances < defect_radius)[0]
+    
+    # Smooth gradient falloff for defect
+    influence = np.clip(1.0 - (distances / defect_radius), 0, 1) ** 2
+    
+    # Alert Red defect color (#DC2626)
+    alert_red = np.array([220, 38, 38])
+    
+    for i in range(len(vertices)):
+        if influence[i] > 0.01:
+            t = influence[i] * 0.9  # 90% opacity
+            vertex_colors[i] = (
+                satin_aluminum * (1 - t) + alert_red * t
+            ).astype(int)
 
-    # Apply Rust Red color to defect vertices
-    rust_red = [180, 50, 50]
-    vertex_colors[defect_indices] = rust_red
-
-    # 3. Industrial Lighting (PBR Style) and Mesh3d Trace
+    # 3. ProAI Aesthetic Lighting (Satin Finish)
     mesh_trace = go.Mesh3d(
         x=vertices[:, 0],
         y=vertices[:, 1],
@@ -60,15 +69,16 @@ def generate_demo_part():
         j=j_vals,
         k=k_vals,
         vertexcolor=vertex_colors,
-        flatshading=False,
+        flatshading=False,  # Smooth Gouraud shading
         lighting={
-            'ambient': 0.3,
-            'diffuse': 0.6,
-            'roughness': 0.1,
-            'specular': 0.5,
-            'fresnel': 0.2
+            'ambient': 0.65,   # High ambient - no harsh shadows
+            'diffuse': 0.4,    # Soft directional
+            'roughness': 0.1,  # Smooth satin finish
+            'specular': 0.4,   # Soft satin shine
+            'fresnel': 1.0     # Rim lighting
         },
-        lightposition={'x': 100, 'y': 100, 'z': 2000}
+        lightposition={'x': 0, 'y': 0, 'z': 2000}
     )
 
     return mesh_trace
+

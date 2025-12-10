@@ -57,6 +57,13 @@ def get_default_config() -> dict:
             "dent_hsv_upper": [130, 255, 255],
             "min_contour_area": 100,
             "morphology_kernel_size": 5,
+            # 3D Depth Analysis settings
+            "enable_depth_analysis": True,
+            "pointcloud_voxel_size": 0.005,
+            "normal_estimation_k": 20,
+            "curvature_threshold": 0.03,
+            "anomaly_clustering_eps": 0.015,
+            "min_defect_points": 30,
         },
         "agent": {
             "provider": "ollama",  # "ollama" or "openai"

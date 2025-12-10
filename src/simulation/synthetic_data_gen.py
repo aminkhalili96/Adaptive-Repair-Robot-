@@ -70,10 +70,11 @@ class SyntheticDefect:
     defect_type: str  # rust, crack, dent
     
     def to_dict(self) -> Dict:
+        """Convert to JSON-serializable dict (handles numpy types)."""
         return {
-            "position": list(self.position),
-            "normal": list(self.normal),
-            "size": self.size,
+            "position": [float(x) for x in self.position],
+            "normal": [float(x) for x in self.normal],
+            "size": float(self.size),
             "defect_type": self.defect_type
         }
 

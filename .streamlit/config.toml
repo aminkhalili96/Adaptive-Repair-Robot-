@@ -1,0 +1,11 @@
+[theme]
+base = "light"
+primaryColor = "#D97757"        # Burnt Orange (Accent)
+backgroundColor = "#FDFBF9"     # Warm Paper White
+secondaryBackgroundColor = "#F4F1EA" # Beige Sidebar
+textColor = "#2D2D2D"           # Charcoal Grey
+font = "serif"                  # clean serif look
+
+[server]
+headless = true
+runOnSave = true

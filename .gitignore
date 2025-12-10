@@ -31,9 +31,11 @@ htmlcov/
 
 # Personal/Interview
 docs/INTERVIEW.md
+docs/DEMO_SCRIPT.md
 CLAUDE.md
 GEMINI.md
 *.personal.md
+FULL_PLAN_DRAFT.md
 
 # Agent Artifacts
 task.md
@@ -41,3 +43,8 @@ implementation_plan.md
 walkthrough.md
 review_report.md
 .gemini/
+.agent/
+
+# Generated Data
+synthetic_data/
+temp/

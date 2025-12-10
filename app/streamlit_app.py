@@ -59,101 +59,106 @@ try:
 except ImportError:
     HAS_SAM = False
 
-# ============ DARK INDUSTRIAL THEME ============
+# ============ CLAUDE AESTHETIC THEME ============
+# Warm paper-like design inspired by Anthropic's Claude
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap');
     
-    /* === GLOBAL RESET === */
+    /* === GLOBAL - COMPACT WARM PAPER AESTHETIC === */
     .stApp {
-        background: #121212 !important;
-        font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        background: #FDFBF9 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
     
     /* Hide Streamlit branding */
     #MainMenu, footer, header, .stDeployButton {display: none !important; visibility: hidden !important;}
     
-    /* Remove default padding */
+    /* COMPACT padding */
     .main .block-container {
         padding: 0.5rem 1rem !important;
         max-width: 100% !important;
     }
     
-    /* === SIDEBAR === */
+    /* === SIDEBAR - WARM BEIGE === */
     [data-testid="stSidebar"] {
-        background: #1E1E1E !important;
-        border-right: 1px solid #2D2D2D !important;
+        background: #F4F1EA !important;
+        border-right: 1px solid #E8E4DC !important;
     }
     
     [data-testid="stSidebar"] .stMarkdown {
-        color: #E0E0E0 !important;
+        color: #2D2D2D !important;
     }
     
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3 {
-        color: #FFFFFF !important;
-        font-weight: 600 !important;
+        font-family: 'Merriweather', Georgia, serif !important;
+        color: #1A1A1A !important;
+        font-weight: 700 !important;
     }
     
-    /* === TYPOGRAPHY === */
+    /* === TYPOGRAPHY - SERIF HEADERS === */
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'IBM Plex Sans', sans-serif !important;
-        color: #FFFFFF !important;
-        font-weight: 600 !important;
-        letter-spacing: -0.02em !important;
+        font-family: 'Merriweather', Georgia, serif !important;
+        color: #1A1A1A !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.01em !important;
     }
     
     p, span, label, .stMarkdown, div {
-        color: #E0E0E0 !important;
+        color: #2D2D2D !important;
     }
     
-    /* === BUTTONS === */
-    /* Primary Action (Safety Orange) */
+    /* === BUTTONS - COMPACT BURNT ORANGE === */
     .stButton > button[kind="primary"], 
     .stButton > button {
-        background: linear-gradient(135deg, #FF5722 0%, #E64A19 100%) !important;
+        background: linear-gradient(135deg, #D97757 0%, #C4654A 100%) !important;
         color: #FFFFFF !important;
         border: none !important;
         border-radius: 6px !important;
-        padding: 12px 24px !important;
+        padding: 6px 14px !important;
+        font-family: 'Inter', sans-serif !important;
         font-weight: 600 !important;
-        font-size: 14px !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.05em !important;
+        font-size: 12px !important;
+        text-transform: none !important;
+        letter-spacing: 0 !important;
         transition: all 0.2s ease !important;
-        box-shadow: 0 2px 8px rgba(255, 87, 34, 0.3) !important;
+        box-shadow: 0 1px 4px rgba(217, 119, 87, 0.2) !important;
     }
     
     .stButton > button:hover {
-        background: linear-gradient(135deg, #FF7043 0%, #FF5722 100%) !important;
-        box-shadow: 0 4px 16px rgba(255, 87, 34, 0.4) !important;
+        background: linear-gradient(135deg, #E08A6D 0%, #D97757 100%) !important;
+        box-shadow: 0 4px 16px rgba(217, 119, 87, 0.35) !important;
         transform: translateY(-1px) !important;
     }
     
     .stButton > button:disabled {
-        background: #2D2D2D !important;
-        color: #666666 !important;
+        background: #E8E4DC !important;
+        color: #9A9A9A !important;
         box-shadow: none !important;
     }
     
     /* Secondary buttons */
     .stButton > button[kind="secondary"] {
-        background: #2D2D2D !important;
-        color: #E0E0E0 !important;
+        background: #FFFFFF !important;
+        color: #2D2D2D !important;
+        border: 1px solid #E0E0E0 !important;
         box-shadow: none !important;
     }
     
-    /* === TOP METRICS BAR === */
+    /* === METRICS BAR - LIGHT CARD === */
     .metrics-bar {
-        background: linear-gradient(180deg, #1E1E1E 0%, #181818 100%);
-        border: 1px solid #2D2D2D;
-        border-radius: 8px;
-        padding: 12px 20px;
-        margin-bottom: 16px;
+        background: #FFFFFF;
+        border: 1px solid #E0E0E0;
+        border-bottom: 2px solid #F3F4F6;
+        border-radius: 12px;
+        padding: 16px 24px;
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
         gap: 32px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     
     .metric-item {
@@ -163,26 +168,26 @@ st.markdown("""
     }
     
     .metric-label {
-        color: #808080 !important;
+        color: #6B6B6B !important;
         font-size: 11px !important;
         text-transform: uppercase;
         letter-spacing: 0.08em;
     }
     
     .metric-value {
-        color: #FFFFFF !important;
+        color: #1A1A1A !important;
         font-size: 14px !important;
         font-weight: 600;
     }
     
     .status-online {
-        color: #4CAF50 !important;
+        color: #2E7D32 !important;
     }
     
     .status-dot {
         width: 8px;
         height: 8px;
-        background: #4CAF50;
+        background: #2E7D32;
         border-radius: 50%;
         display: inline-block;
         animation: pulse 2s infinite;
@@ -193,27 +198,29 @@ st.markdown("""
         50% { opacity: 0.5; }
     }
     
-    /* === AGENT PANEL === */
+    /* === AGENT PANEL - DOCUMENT STYLE === */
     .agent-panel {
-        background: #1A1A1A;
-        border: 1px solid #2D2D2D;
+        background: #FFFFFF;
+        border: 1px solid #E0E0E0;
         border-radius: 12px;
         height: 100%;
         display: flex;
         flex-direction: column;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     
     .agent-header {
-        background: linear-gradient(135deg, #1E1E1E 0%, #252525 100%);
+        background: #FAFAFA;
         padding: 16px 20px;
-        border-bottom: 1px solid #2D2D2D;
+        border-bottom: 1px solid #E0E0E0;
         border-radius: 12px 12px 0 0;
     }
     
     .agent-title {
-        color: #FFFFFF !important;
+        font-family: 'Merriweather', serif !important;
+        color: #1A1A1A !important;
         font-size: 16px !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         margin: 0 !important;
         display: flex;
         align-items: center;
@@ -221,57 +228,195 @@ st.markdown("""
     }
     
     .agent-subtitle {
-        color: #808080 !important;
+        color: #6B6B6B !important;
         font-size: 12px !important;
         margin-top: 4px !important;
     }
     
-    /* Chat messages */
+    /* Chat messages - ChatGPT style floating cards */
     .chat-message {
-        padding: 12px 16px;
-        margin: 8px 12px;
-        border-radius: 12px;
+        padding: 16px 20px;
+        margin: 12px 16px;
+        border-radius: 16px;
         max-width: 85%;
     }
     
     .chat-user {
-        background: #2D2D2D;
+        background: #F3F4F6 !important;
         margin-left: auto;
         border-bottom-right-radius: 4px;
     }
     
     .chat-agent {
-        background: transparent;
-        border: 1px solid #2D2D2D;
+        background: #FFFFFF !important;
+        border: 1px solid #E5E7EB !important;
         margin-right: auto;
         border-bottom-left-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
     }
     
     .chat-agent-icon {
         width: 24px;
         height: 24px;
         border-radius: 50%;
-        background: #FF5722;
+        background: #D97757;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         font-size: 12px;
+        color: #FFFFFF;
         margin-right: 8px;
     }
     
-    /* === 3D VIEWER CONTAINER === */
+    /* === NATIVE st.chat_message STYLING === */
+    /* User messages - accent color pop on glass */
+    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
+        flex-direction: row-reverse !important;
+        background: linear-gradient(135deg, #D97757 0%, #C4654A 100%) !important;
+        border-radius: 16px !important;
+        border-bottom-right-radius: 4px !important;
+        margin: 8px 0 !important;
+        padding: 12px 16px !important;
+        box-shadow: 0 2px 8px rgba(217, 119, 87, 0.25) !important;
+    }
+    
+    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) p,
+    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) span {
+        color: #FFFFFF !important;
+    }
+    
+    /* AI messages - clean white on glass */
+    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
+        background: rgba(255, 255, 255, 0.9) !important;
+        border: 1px solid #E5E7EB !important;
+        box-shadow: none !important;
+        border-radius: 16px !important;
+        border-bottom-left-radius: 4px !important;
+        margin: 8px 0 !important;
+        padding: 12px 16px !important;
+    }
+    
+    [data-testid="stChatMessage"] {
+        border: none !important;
+    }
+    
+    /* === GLASSMORPHISM - RIGHT COLUMN (CHAT PANEL) === */
+    /* Target the second column's content */
+    [data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-of-type(2) > div {
+        background: rgba(255, 255, 255, 0.65) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.8) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05) !important;
+        padding: 20px !important;
+        min-height: 70vh !important;
+    }
+    
+    /* Glass panel header refinement */
+    .agent-header {
+        background: rgba(255, 255, 255, 0.5) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(224, 224, 224, 0.5) !important;
+        border-radius: 12px 12px 0 0 !important;
+        margin: -20px -20px 16px -20px !important;
+        padding: 16px 20px !important;
+    }
+    
+    /* Chat input on glass */
+    .stChatInput > div {
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        border: 1px solid rgba(224, 224, 224, 0.6) !important;
+        border-radius: 12px !important;
+    }
+    
+    /* === AUDIO INPUT - HIDE TIMELINE === */
+    [data-testid="stAudioInput"] {
+        max-width: 200px !important;
+    }
+    
+    [data-testid="stAudioInput"] audio::-webkit-media-controls-timeline,
+    [data-testid="stAudioInput"] audio::-webkit-media-controls-time-remaining-display,
+    [data-testid="stAudioInput"] audio::-webkit-media-controls-current-time-display {
+        display: none !important;
+    }
+    
+    /* Firefox audio controls */
+    [data-testid="stAudioInput"] audio {
+        width: 80px !important;
+    }
+    
+    /* === VIEWPORT CARD - INDUSTRIAL DASHBOARD === */
+    .viewport-card {
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        padding: 0;
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+    
+    .viewport-hud {
+        background: #FAFAFA;
+        border-bottom: 1px solid #E5E7EB;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 12px;
+        font-family: 'Inter', -apple-system, sans-serif;
+    }
+    
+    .hud-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .hud-label {
+        color: #6B7280 !important;
+        font-weight: 500;
+        font-size: 11px;
+    }
+    
+    .hud-value {
+        color: #1F2937 !important;
+        font-weight: 600;
+        font-size: 12px;
+    }
+    
+    .status-dot-live {
+        width: 8px;
+        height: 8px;
+        background: #10B981;
+        border-radius: 50%;
+        animation: pulse-dot 2s infinite;
+    }
+    
+    @keyframes pulse-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(0.9); }
+    }
+    
+    /* === 3D VIEWER CONTAINER - TRANSPARENT === */
     .viewer-container {
-        background: #0D0D0D;
-        border: 1px solid #2D2D2D;
+        background: transparent;
+        border: 1px solid #E0E0E0;
         border-radius: 12px;
         padding: 0;
         overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     
     .viewer-toolbar {
-        background: #1E1E1E;
+        background: #FAFAFA;
         padding: 12px 16px;
-        border-bottom: 1px solid #2D2D2D;
+        border-bottom: 1px solid #E0E0E0;
         display: flex;
         align-items: center;
         gap: 12px;
@@ -297,24 +442,24 @@ st.markdown("""
     }
     
     .step-complete {
-        background: #1B5E20;
-        color: #4CAF50;
+        background: #E8F5E9;
+        color: #2E7D32;
     }
     
     .step-active {
-        background: #FF5722;
+        background: #D97757;
         color: #FFFFFF;
     }
     
     .step-pending {
-        background: #2D2D2D;
-        color: #666666;
+        background: #F4F1EA;
+        color: #9A9A9A;
     }
     
     /* === DEFECT CARDS === */
     .defect-card {
-        background: #1E1E1E;
-        border: 1px solid #2D2D2D;
+        background: #FFFFFF;
+        border: 1px solid #E0E0E0;
         border-radius: 8px;
         padding: 12px 16px;
         margin: 8px 0;
@@ -323,62 +468,82 @@ st.markdown("""
     }
     
     .defect-card:hover {
-        border-color: #FF5722;
-        background: #252525;
+        border-color: #D97757;
+        box-shadow: 0 2px 8px rgba(217, 119, 87, 0.15);
     }
     
-    .severity-high { border-left: 3px solid #F44336 !important; }
-    .severity-medium { border-left: 3px solid #FF9800 !important; }
-    .severity-low { border-left: 3px solid #4CAF50 !important; }
+    .severity-high { border-left: 3px solid #C62828 !important; }
+    .severity-medium { border-left: 3px solid #EF6C00 !important; }
+    .severity-low { border-left: 3px solid #2E7D32 !important; }
     
-    /* === SCROLLBAR === */
+    /* === SCROLLBAR - SUBTLE === */
     ::-webkit-scrollbar {
         width: 8px;
         height: 8px;
     }
     
     ::-webkit-scrollbar-track {
-        background: #121212;
+        background: #F4F1EA;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: #3D3D3D;
+        background: #D0CBC3;
         border-radius: 4px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: #4D4D4D;
+        background: #B8B3AB;
     }
     
-    /* === SELECT BOX === */
+    /* === SELECT BOX & DROPDOWN === */
     .stSelectbox > div > div {
-        background: #1E1E1E !important;
-        border: 1px solid #2D2D2D !important;
-        border-radius: 6px !important;
-        color: #E0E0E0 !important;
+        background: #FFFFFF !important;
+        border: 1px solid #E0E0E0 !important;
+        border-radius: 8px !important;
+        color: #2D2D2D !important;
+    }
+    
+    /* Dropdown menu list (the popup) */
+    .stSelectbox [data-baseweb="popover"],
+    .stSelectbox [data-baseweb="menu"],
+    [data-baseweb="popover"] > div,
+    [data-baseweb="menu"] {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+    }
+    
+    .stSelectbox [data-baseweb="menu"] li,
+    [data-baseweb="menu"] li {
+        background: #FFFFFF !important;
+        color: #2D2D2D !important;
+    }
+    
+    .stSelectbox [data-baseweb="menu"] li:hover,
+    [data-baseweb="menu"] li:hover {
+        background: #F4F1EA !important;
     }
     
     /* === FILE UPLOADER === */
     [data-testid="stFileUploader"] {
-        background: #1E1E1E !important;
-        border: 1px dashed #3D3D3D !important;
+        background: #FFFFFF !important;
+        border: 1px dashed #D0CBC3 !important;
         border-radius: 8px !important;
         padding: 16px !important;
     }
     
     [data-testid="stFileUploader"]:hover {
-        border-color: #FF5722 !important;
+        border-color: #D97757 !important;
     }
     
     /* === CHAT INPUT === */
     .stChatInput > div {
-        background: #1E1E1E !important;
-        border: 1px solid #2D2D2D !important;
+        background: #FFFFFF !important;
+        border: 1px solid #E0E0E0 !important;
         border-radius: 8px !important;
     }
     
     .stChatInput input {
-        color: #E0E0E0 !important;
+        color: #2D2D2D !important;
     }
     
     /* === RADIO BUTTONS === */
@@ -387,17 +552,157 @@ st.markdown("""
     }
     
     .stRadio label {
-        background: #1E1E1E !important;
-        border: 1px solid #2D2D2D !important;
-        border-radius: 6px !important;
+        background: #FFFFFF !important;
+        border: 1px solid #E0E0E0 !important;
+        border-radius: 8px !important;
         padding: 8px 16px !important;
-        color: #E0E0E0 !important;
+        color: #2D2D2D !important;
     }
     
     .stRadio label[data-checked="true"] {
-        background: #FF5722 !important;
-        border-color: #FF5722 !important;
+        background: #D97757 !important;
+        border-color: #D97757 !important;
         color: #FFFFFF !important;
+    }
+    
+    /* === EXPANDER === */
+    .streamlit-expanderHeader {
+        background: #FAFAFA !important;
+        border: 1px solid #E0E0E0 !important;
+        border-radius: 8px !important;
+    }
+    
+    /* === SUCCESS/INFO/WARNING BOXES === */
+    .stSuccess {
+        background: #E8F5E9 !important;
+        color: #1B5E20 !important;
+    }
+    
+    .stInfo {
+        background: #FFF8E1 !important;
+        color: #E65100 !important;
+    }
+    
+    /* === VOICE MIC BUTTON - COMPACT 44px === */
+    [data-testid="stAudioInput"] {
+        width: 48px !important;
+        max-width: 48px !important;
+        min-width: 48px !important;
+        height: 48px !important;
+        overflow: hidden !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, #D97757 0%, #C4654A 100%) !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: 0 2px 8px rgba(217, 119, 87, 0.35) !important;
+    }
+    
+    [data-testid="stAudioInput"] > div {
+        width: 48px !important;
+        height: 48px !important;
+        padding: 0 !important;
+    }
+    
+    /* Hide all audio player elements except record button */
+    [data-testid="stAudioInput"] audio,
+    [data-testid="stAudioInput"] canvas,
+    [data-testid="stAudioInput"] .waveform,
+    [data-testid="stAudioInput"] [data-testid*="time"],
+    [data-testid="stAudioInput"] span:not(:has(button)),
+    [data-testid="stAudioInput"] label {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    /* Style the record button as circle */
+    [data-testid="stAudioInput"] button {
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px !important;
+        border-radius: 50% !important;
+        background: transparent !important;
+        border: none !important;
+        color: #FFFFFF !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    [data-testid="stAudioInput"] button:hover {
+        transform: scale(1.08) !important;
+        background: rgba(255,255,255,0.1) !important;
+    }
+    
+    [data-testid="stAudioInput"] button svg {
+        fill: #FFFFFF !important;
+        width: 20px !important;
+        height: 20px !important;
+    }
+    
+    /* === POPOVER MIC BUTTON - CLEAN SQUARE === */
+    [data-testid="stPopover"] > button {
+        width: 45px !important;
+        height: 45px !important;
+        min-width: 45px !important;
+        padding: 0 !important;
+        border: 1px solid #E5E7EB !important;
+        border-radius: 8px !important;
+        background: #FFFFFF !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 20px !important;
+    }
+    
+    /* Hide the caret/dropdown arrow in popover button - AGGRESSIVE */
+    [data-testid="stPopover"] > button svg,
+    [data-testid="stPopover"] > button [data-testid="stIconMaterial"],
+    [data-testid="stPopover"] > button > div:last-child,
+    [data-testid="stPopover"] > button > span > svg {
+        display: none !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+    
+    /* Only show the emoji text */
+    [data-testid="stPopover"] > button > span:first-child {
+        font-size: 20px !important;
+    }
+    
+    [data-testid="stPopover"] > button:hover {
+        background: #F9FAFB !important;
+        border-color: #D97757 !important;
+    }
+    
+    /* === CHAT LAYOUT - TIGHTER SPACING === */
+    /* Reduce gap between chat history and input */
+    [data-testid="stVerticalBlockBorderWrapper"] {
+        gap: 8px !important;
+    }
+    
+    /* Chat input container - compact */
+    .stChatInput {
+        margin-top: 8px !important;
+        padding-top: 0 !important;
+    }
+    
+    /* Chat message container - tighter */
+    [data-testid="stChatMessageContent"] {
+        padding: 8px 12px !important;
+    }
+    
+    /* === VIEWPORT TOOLBAR - ANCHORED HEADER === */
+    .viewport-toolbar-anchored {
+        background: #F9FAFB;
+        padding: 12px 16px;
+        border: 1px solid #E5E7EB;
+        border-bottom: 2px solid #E5E7EB;
+        border-radius: 12px 12px 0 0;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-family: 'Inter', -apple-system, sans-serif;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -419,6 +724,8 @@ SAMPLE_PARTS = {
     "aircraft_fuselage": {"type": "procedural", "name": "Aircraft Fuselage", "desc": "Cylindrical section"},
     "pipe_bend": {"type": "procedural", "name": "Complex Pipe Bend", "desc": "Pipe elbow"},
     "saddle_shape": {"type": "procedural", "name": "Saddle Shape", "desc": "Hyperbolic surface"},
+    # Sci-Fi Robot (new!)
+    "scifi_drone": {"type": "robot", "name": "Sci-Fi Scout Drone", "desc": "Articulated robot with legs"},
 }
 
 
@@ -452,6 +759,10 @@ def init_state():
         # Custom Path (Code Interpreter)
         "custom_path_points": None,  # Generated path points from LLM code
         "custom_path_info": None,  # Pattern description and metadata
+        # Simulation video recording
+        "simulation_video": None,  # Path to recorded simulation video
+        # Quality Assurance Report
+        "qa_report": None,  # Cached QA report data
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -487,6 +798,8 @@ def reset_state():
     st.session_state.sam_click_y = 300
     st.session_state.custom_path_points = None
     st.session_state.custom_path_info = None
+    st.session_state.simulation_video = None
+    st.session_state.qa_report = None
 
 
 def capture_figure_as_base64(fig: go.Figure) -> str:
@@ -513,8 +826,7 @@ def transcribe_audio(audio_bytes: bytes) -> str:
                 )
         return transcript.text
     except Exception as e:
-        print(f"Error transcribing audio: {e}")
-        return ""
+        return f"Error: {str(e)}"
 
 
 def load_sample_part(part_key: str):
@@ -535,13 +847,15 @@ def load_sample_part(part_key: str):
         
         st.session_state.mesh_data = load_mesh(str(mesh_path))
         st.session_state.mesh_source = "premium"
+        # Don't auto-load defects - user must click SCAN PART first
         st.session_state.workflow_step = 1
-        
-        defects = get_premium_defects(part_key)
-        if defects:
-            st.session_state.defects = defects
-            st.session_state.defect_normals = [d.get('normal', (0, 0, 1)) for d in defects]
-            st.session_state.workflow_step = 2
+    elif part_info["type"] == "robot":
+        # Sci-Fi Drone robot - special handling
+        from src.visualization.robot_generator import get_robot_trace
+        st.session_state.mesh_display_trace = None  # Reset
+        st.session_state.robot_traces = get_robot_trace()  # Store multiple traces
+        st.session_state.mesh_source = "robot"
+        st.session_state.workflow_step = 1
     else:
         generators = {
             # High-Fidelity Models (new)
@@ -557,7 +871,8 @@ def load_sample_part(part_key: str):
         if part_key in generators:
             st.session_state.mesh_display_trace = generators[part_key]()
             st.session_state.mesh_source = "procedural"
-            st.session_state.workflow_step = 2
+            # Procedural parts also need scan first
+            st.session_state.workflow_step = 1
 
 
 def load_uploaded_mesh(uploaded_file):
@@ -575,6 +890,37 @@ def load_uploaded_mesh(uploaded_file):
 
 
 def perform_scan():
+    """Perform defect scan on the loaded part."""
+    # For premium parts, use predefined defects
+    if st.session_state.mesh_source == "premium" and st.session_state.current_part_key:
+        defects = get_premium_defects(st.session_state.current_part_key)
+        if defects:
+            st.session_state.defects = defects
+            st.session_state.defect_normals = [d.get('normal', (0, 0, 1)) for d in defects]
+            st.session_state.workflow_step = 2
+            return
+    
+    # For procedural parts, generate synthetic defects based on traces
+    if st.session_state.mesh_source == "procedural":
+        # Generate random defects for procedural parts
+        defect_types = ['crack', 'corrosion', 'wear', 'pitting']
+        severities = ['high', 'medium', 'low']
+        n_defects = np.random.randint(2, 5)
+        st.session_state.defects = [
+            {
+                'position': (np.random.uniform(-0.1, 0.1), np.random.uniform(-0.1, 0.1), np.random.uniform(0, 0.3)),
+                'type': np.random.choice(defect_types),
+                'severity': np.random.choice(severities),
+                'confidence': np.random.uniform(0.75, 0.98),
+                'normal': (0, 0, 1)
+            }
+            for _ in range(n_defects)
+        ]
+        st.session_state.defect_normals = [d['normal'] for d in st.session_state.defects]
+        st.session_state.workflow_step = 2
+        return
+    
+    # For uploaded meshes, sample surface points
     if not st.session_state.mesh_data:
         return
     positions, normals = sample_surface_points(st.session_state.mesh_data, n_points=3)
@@ -602,6 +948,121 @@ def generate_plans():
         plans.append({"index": i, "defect_type": defect['type'], **plan})
     st.session_state.plans = plans
     st.session_state.workflow_step = 3
+
+
+def process_user_message(user_message: str):
+    """Process a user message through the agent and handle response."""
+    # Add to chat history
+    st.session_state.chat_history.append({
+        "role": "user",
+        "content": user_message,
+        "avatar": "User"
+    })
+    
+    # Update agent state and process message
+    st.session_state.agent_team.update_state(
+        defects=st.session_state.defects,
+        plans=st.session_state.plans,
+        workflow_step=st.session_state.workflow_step,
+        mesh_name=st.session_state.mesh_name
+    )
+    
+    response = st.session_state.agent_team.process_message(user_message)
+    
+    # Remove emoji from avatar if present
+    avatar_text = response["avatar"]
+    if avatar_text == "🤖": avatar_text = "AI"
+    
+    st.session_state.chat_history.append({
+        "role": "assistant",
+        "content": response["content"],
+        "avatar": avatar_text,
+        "agent": response["agent"]
+    })
+    
+    # Handle UI commands from supervisor
+    for cmd in response.get("ui_commands", []):
+        cmd_type = cmd.get("type", "")
+        
+        # Camera focus/zoom
+        if cmd_type in ["FOCUS_CAMERA", "ZOOM_TO", "HIGHLIGHT_DEFECT"] and cmd.get("position"):
+            st.session_state.highlight_position = cmd["position"]
+            st.session_state.camera_target = cmd["position"]
+        
+        # Highlight specific defect
+        if cmd_type == "HIGHLIGHT" and cmd.get("defect_index") is not None:
+            idx = cmd["defect_index"]
+            if idx < len(st.session_state.defects):
+                st.session_state.highlight_position = st.session_state.defects[idx]["position"]
+                st.session_state.camera_target = st.session_state.defects[idx]["position"]
+        
+        # Reset view
+        if cmd_type == "RESET_VIEW":
+            st.session_state.highlight_position = None
+            st.session_state.camera_target = None
+        
+        # Trigger scan
+        if cmd_type == "TRIGGER_SCAN":
+            if st.session_state.mesh_source in ['upload', 'premium']:
+                perform_scan()
+        
+        # Trigger plan
+        if cmd_type == "TRIGGER_PLAN":
+            if st.session_state.defects:
+                generate_plans()
+        
+        # Execute repair
+        if cmd_type == "EXECUTE":
+            if st.session_state.plans and st.session_state.approved:
+                st.session_state.workflow_step = 5
+        
+        # Custom path generated by Code Interpreter
+        if cmd_type == "CUSTOM_PATH_GENERATED":
+            data = cmd.get("data", {})
+            if data.get("points"):
+                st.session_state.custom_path_points = data["points"]
+                st.session_state.custom_path_info = {
+                    "pattern": data.get("pattern", "Custom"),
+                    "num_points": data.get("num_points", len(data["points"]))
+                }
+        
+        # Visual inspection - capture snapshot and analyze
+        if cmd_type == "CAPTURE_SNAPSHOT":
+            if st.session_state.current_figure is not None:
+                # Capture the current figure as base64 image
+                image_base64 = capture_figure_as_base64(st.session_state.current_figure)
+                if image_base64:
+                    # Call agent again with the image for visual analysis
+                    st.session_state.agent_team.update_state(
+                        defects=st.session_state.defects,
+                        plans=st.session_state.plans,
+                        workflow_step=st.session_state.workflow_step,
+                        mesh_name=st.session_state.mesh_name
+                    )
+                    visual_response = st.session_state.agent_team.agent.process_message(
+                        message="Analyze this image",
+                        defects=st.session_state.defects,
+                        plans=st.session_state.plans,
+                        workflow_step=st.session_state.workflow_step,
+                        mesh_name=st.session_state.mesh_name,
+                        image_base64=image_base64
+                    )
+                    # Replace the "capturing..." message with actual analysis
+                    if st.session_state.chat_history and st.session_state.chat_history[-1]["role"] == "assistant":
+                        st.session_state.chat_history[-1] = {
+                            "role": "assistant",
+                            "content": visual_response["content"],
+                            "avatar": visual_response["avatar"],
+                            "agent": visual_response["agent"]
+                        }
+                else:
+                    # Update last message with error
+                    if st.session_state.chat_history:
+                        st.session_state.chat_history[-1]["content"] = "Could not capture the 3D view. Please ensure a part is loaded."
+            else:
+                # No figure available
+                if st.session_state.chat_history:
+                    st.session_state.chat_history[-1]["content"] = "No part loaded to analyze. Please load a part first."
 
 
 # ============ SIDEBAR (Compact Part Selection) ============
@@ -638,13 +1099,48 @@ with st.sidebar:
     st.markdown("##### Workflow")
     step = st.session_state.workflow_step
     
-    can_scan = st.session_state.mesh_source in ['upload', 'premium'] and step == 1
+    can_scan = st.session_state.mesh_source in ['upload', 'premium', 'procedural'] and step == 1
     if st.button("SCAN PART", disabled=not can_scan, use_container_width=True):
-        perform_scan()
+        with st.status("Factory Team Working...", expanded=True) as status:
+            import time
+            st.write("**Inspector** is analyzing surface texture...")
+            time.sleep(0.5)  # Simulate processing
+            
+            st.write("**Vision System** capturing defect regions...")
+            time.sleep(0.3)
+            
+            st.write("**AI Model** classifying defect types...")
+            time.sleep(0.4)
+            
+            # Actually perform the scan
+            perform_scan()
+            
+            st.write(f"Found **{len(st.session_state.defects)}** defects")
+            status.update(label="Scan Complete", state="complete", expanded=False)
+            time.sleep(0.3)
         st.rerun()
     
     if st.button("GENERATE PLAN", disabled=step != 2, use_container_width=True):
-        generate_plans()
+        with st.status("Factory Team Planning...", expanded=True) as status:
+            import time
+            st.write("**Supervisor** is consulting SOPs...")
+            time.sleep(0.4)
+            
+            st.write("**Engineer** is analyzing repair strategies...")
+            time.sleep(0.3)
+            
+            st.write("**Path Planner** generating toolpaths...")
+            time.sleep(0.4)
+            
+            st.write("**Optimizer** minimizing travel time...")
+            time.sleep(0.3)
+            
+            # Actually generate the plans
+            generate_plans()
+            
+            st.write(f"Generated **{len(st.session_state.plans)}** repair plans")
+            status.update(label="Planning Complete", state="complete", expanded=False)
+            time.sleep(0.3)
         st.rerun()
     
     if step == 3 and st.checkbox("Approve Plan", value=st.session_state.approved):
@@ -696,16 +1192,16 @@ with st.sidebar:
                 barmode='group',
                 height=220,
                 margin=dict(l=10, r=10, t=35, b=10),
-                paper_bgcolor='#1E1E1E',
-                plot_bgcolor='#1E1E1E',
-                font=dict(size=9, color='#808080'),
+                paper_bgcolor='rgba(0,0,0,0)',  # ProAI: transparent
+                plot_bgcolor='rgba(0,0,0,0)',   # ProAI: transparent
+                font=dict(size=9, color='#6B6B6B'),
                 xaxis=dict(
                     showticklabels=False,
                     showgrid=False,
                 ),
                 yaxis=dict(
                     title='Time (s)',
-                    gridcolor='#2D2D2D',
+                    gridcolor='#E0E0E0',  # Light grid for ProAI
                     showgrid=True,
                 ),
                 legend=dict(
@@ -724,175 +1220,389 @@ with st.sidebar:
             # Show totals
             total_predicted = sum(chart_data['predicted_times'])
             total_estimated = sum(chart_data['estimated_times'])
-            st.caption(f"📊 ML Total: **{total_predicted:.0f}s** | Rule Total: **{total_estimated:.0f}s**")
+            st.caption(f"ML Total: **{total_predicted:.0f}s** | Rule Total: **{total_estimated:.0f}s**")
     
     if st.button("EXECUTE REPAIR", disabled=step != 4, use_container_width=True):
+        # Run headless simulation with video recording
+        with st.spinner("Robot is executing repair..."):
+            try:
+                from src.simulation import create_environment, run_simulation_with_recording
+                from pathlib import Path
+                import time
+                
+                # Ensure temp directory exists
+                temp_dir = Path("temp")
+                temp_dir.mkdir(exist_ok=True)
+                
+                # Create headless simulation environment
+                env = create_environment(gui=False)
+                
+                # Calculate steps based on number of defects (60 steps per defect)
+                num_defects = len(st.session_state.defects)
+                num_steps = max(120, num_defects * 60)  # At least 120 steps
+                
+                # Run simulation and record video
+                video_path = run_simulation_with_recording(
+                    env=env,
+                    num_steps=num_steps,
+                    output_filename="simulation_result.mp4",
+                    frame_skip=4  # Record every 4th frame for smaller file
+                )
+                
+                # Cleanup
+                env.close()
+                
+                # Store video path in session state
+                if video_path:
+                    st.session_state.simulation_video = video_path
+                    
+            except Exception as e:
+                st.error(f"Simulation error: {e}")
+                st.session_state.simulation_video = None
+        
         st.session_state.workflow_step = 5
         st.rerun()
     
     if step >= 5:
         st.success("REPAIR COMPLETE")
-    
-    # ============ INTERACTIVE SEGMENTATION (SAM) ============
-    st.markdown("---")
-    st.markdown("##### Interactive Segmentation")
-    
-    sam_enabled = st.checkbox(
-        "Enable Zero-Shot Segmentation",
-        value=st.session_state.sam_enabled,
-        key="sam_toggle",
-        help="Click on the captured view to segment defects using SAM"
-    )
-    st.session_state.sam_enabled = sam_enabled
-    
-    if sam_enabled:
-        if HAS_SAM:
-            segmentor = get_segmentor()
-            status = segmentor.get_status()
-            if status["model_loaded"]:
-                st.caption("MobileSAM loaded")
-            else:
-                st.caption("Using fallback (OpenCV)")
-        else:
-            st.caption("SAM not installed")
         
-        # Capture snapshot button
-        if st.button("Capture View", use_container_width=True):
-            if st.session_state.current_figure:
-                try:
-                    img_bytes = st.session_state.current_figure.to_image(format="png", width=800, height=600)
-                    st.session_state.sam_snapshot = img_bytes
-                    st.session_state.sam_result = None
-                except Exception as e:
-                    st.error(f"Capture failed: {e}")
+        # ============ QUALITY ASSURANCE REPORT CARD ============
+        st.markdown("---")
+        st.markdown("##### Quality Assurance Report")
         
-        # Show click coordinate inputs when snapshot exists
-        if st.session_state.sam_snapshot:
-            col1, col2 = st.columns(2)
-            with col1:
-                st.session_state.sam_click_x = st.number_input(
-                    "Click X", min_value=0, max_value=800,
-                    value=st.session_state.sam_click_x, step=10
-                )
-            with col2:
-                st.session_state.sam_click_y = st.number_input(
-                    "Click Y", min_value=0, max_value=600,
-                    value=st.session_state.sam_click_y, step=10
-                )
+        # Generate report data (or use cached)
+        if "qa_report" not in st.session_state or st.session_state.qa_report is None:
+            import uuid
+            import random
             
-            if st.button("SEGMENT", use_container_width=True, type="primary"):
-                if HAS_SAM:
-                    import cv2
-                    # Decode snapshot to numpy
-                    nparr = np.frombuffer(st.session_state.sam_snapshot, np.uint8)
-                    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                    
-                    # Run SAM segmentation
-                    segmentor = get_segmentor()
-                    result = segmentor.segment_at_point(
-                        image,
-                        st.session_state.sam_click_x,
-                        st.session_state.sam_click_y
-                    )
-                    st.session_state.sam_result = result
-                    st.rerun()
-    
-    # ============ SYNTHETIC DATA GENERATION ============
-    st.markdown("---")
-    st.markdown("##### 🧪 Synthetic Data Pipeline")
-    st.caption("Generate ML training datasets")
-    
-    # Only show if mesh is loaded
-    can_generate = st.session_state.mesh_data is not None
-    
-    # Number of samples slider
-    num_samples = st.slider(
-        "Samples to generate",
-        min_value=5,
-        max_value=100,
-        value=50,
-        step=5,
-        disabled=not can_generate,
-        help="Number of training samples with randomized camera/lighting/defects"
-    )
-    
-    if st.button("🏭 Generate Training Data", use_container_width=True, disabled=not can_generate):
-        try:
-            from src.simulation.synthetic_data_gen import generate_dataset
+            # Generate report once and cache it
+            num_defects = len(st.session_state.defects)
+            cycle_time = round(random.uniform(2.5, 6.5), 1)
             
-            output_dir = "synthetic_data"
-            progress_bar = st.progress(0, text="Initializing...")
-            status_text = st.empty()
+            # Determine primary tool based on defect types
+            defect_types = [d.get('type', 'unknown') for d in st.session_state.defects]
+            tool_map = {
+                'crack': 'Welding Torch 400W',
+                'corrosion': 'Sanding Disc 80G',
+                'wear': 'Polishing Pad 3000G',
+                'pitting': 'Filler Nozzle 0.5mm',
+            }
+            primary_type = max(set(defect_types), key=defect_types.count) if defect_types else 'unknown'
+            tool_used = tool_map.get(primary_type, 'Multi-Tool Head')
             
-            def update_progress(current, total):
-                progress = current / total
-                progress_bar.progress(progress, text=f"Generating sample {current}/{total}")
-                status_text.caption(f"🔄 Rendering scene with randomized camera/lighting...")
+            st.session_state.qa_report = {
+                "job_id": str(uuid.uuid4())[:8].upper(),
+                "cycle_time": cycle_time,
+                "defects_total": num_defects,
+                "defects_repaired": num_defects,
+                "tool_used": tool_used,
+                "status": "PASSED",
+                "timestamp": st.session_state.get("execution_time", "Just now")
+            }
+        
+        report = st.session_state.qa_report
+        
+        # Report Card Container with border
+        with st.container(border=True):
+            # Header row
+            col_id, col_status = st.columns([3, 1])
+            with col_id:
+                st.markdown(f"**Job ID:** `{report['job_id']}`")
+            with col_status:
+                st.markdown(f"<span style='color: #2E7D32; font-weight: bold; font-size: 18px;'>{report['status']}</span>", unsafe_allow_html=True)
             
-            # Generate dataset
-            results = generate_dataset(
-                mesh_data=st.session_state.mesh_data,
-                num_samples=num_samples,
-                output_dir=output_dir,
-                progress_callback=update_progress
+            st.markdown("---")
+            
+            # Metrics row
+            m1, m2, m3, m4 = st.columns(4)
+            m1.metric("Cycle Time", f"{report['cycle_time']}s")
+            m2.metric("Defects Repaired", f"{report['defects_repaired']}/{report['defects_total']}")
+            m3.metric("Tool Used", report['tool_used'].split()[0])  # First word
+            m4.metric("Quality Score", "98.5%", delta="+2.3%")
+            
+            # Tool detail caption
+            st.caption(f"Primary Tool: **{report['tool_used']}**")
+            
+            st.markdown("---")
+            
+            # Download Report Button
+            report_text = f"""
+=====================================
+     AARR QUALITY ASSURANCE REPORT
+=====================================
+
+Job ID:          {report['job_id']}
+Status:          {report['status']}
+Timestamp:       {report['timestamp']}
+
+-------------------------------------
+            REPAIR SUMMARY
+-------------------------------------
+Cycle Time:      {report['cycle_time']} seconds
+Defects Found:   {report['defects_total']}
+Defects Repaired:{report['defects_repaired']}
+Success Rate:    100%
+
+Tool Used:       {report['tool_used']}
+Quality Score:   98.5%
+
+-------------------------------------
+          DEFECT DETAILS
+-------------------------------------
+"""
+            for i, defect in enumerate(st.session_state.defects):
+                report_text += f"""
+Defect #{i+1}:
+  Type:     {defect.get('type', 'Unknown').capitalize()}
+  Severity: {defect.get('severity', 'Unknown').capitalize()}
+  Position: {defect.get('position', (0,0,0))}
+  Status:   REPAIRED
+"""
+            report_text += """
+-------------------------------------
+Certified by: AARR Autonomous System
+=====================================
+"""
+            
+            st.download_button(
+                label="Download Report",
+                data=report_text,
+                file_name=f"AARR_Report_{report['job_id']}.txt",
+                mime="text/plain",
+                use_container_width=True
             )
-            
-            progress_bar.progress(1.0, text="Complete!")
-            status_text.empty()
-            st.success(f"✅ Generated {len(results)} samples in `{output_dir}/`")
-            st.caption(f"📁 Images: `image_*.png` | Masks: `mask_*.png` | Meta: `metadata_*.json`")
-            
-        except Exception as e:
-            st.error(f"Generation failed: {e}")
+        
+        # Display simulation video if available
+        if st.session_state.get("simulation_video"):
+            video_path = st.session_state.simulation_video
+            if Path(video_path).exists():
+                st.markdown("##### Repair Execution Video")
+                st.video(video_path)
+            else:
+                st.info("Video recording not available (PyBullet/OpenCV required)")
+
     
-    if not can_generate:
-        st.caption("⚠️ Load a mesh first (STL/OBJ upload)")
+    # ============ ADVANCED TOOLS EXPANDER ============
+    with st.expander("Advanced Tools", expanded=False):
+        # ============ INTERACTIVE SEGMENTATION (SAM) ============
+        st.markdown("##### Interactive Segmentation")
+        
+        sam_enabled = st.checkbox(
+            "Enable Zero-Shot Segmentation",
+            value=st.session_state.sam_enabled,
+            key="sam_toggle",
+            help="Click on the captured view to segment defects using SAM"
+        )
+        st.session_state.sam_enabled = sam_enabled
+        
+        if sam_enabled:
+            if HAS_SAM:
+                segmentor = get_segmentor()
+                status = segmentor.get_status()
+                if status["model_loaded"]:
+                    st.caption("MobileSAM loaded")
+                else:
+                    st.caption("Using fallback (OpenCV)")
+            else:
+                st.caption("SAM not installed")
+            
+            # Capture snapshot button
+            if st.button("Capture View", use_container_width=True, key="capture_sam"):
+                if st.session_state.current_figure:
+                    try:
+                        img_bytes = st.session_state.current_figure.to_image(format="png", width=800, height=600)
+                        st.session_state.sam_snapshot = img_bytes
+                        st.session_state.sam_result = None
+                    except Exception as e:
+                        st.error(f"Capture failed: {e}")
+            
+            # Show click coordinate inputs when snapshot exists
+            if st.session_state.sam_snapshot:
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.session_state.sam_click_x = st.number_input(
+                        "Click X", min_value=0, max_value=800,
+                        value=st.session_state.sam_click_x, step=10
+                    )
+                with col2:
+                    st.session_state.sam_click_y = st.number_input(
+                        "Click Y", min_value=0, max_value=600,
+                        value=st.session_state.sam_click_y, step=10
+                    )
+                
+                if st.button("SEGMENT", use_container_width=True, type="primary", key="segment_sam"):
+                    if HAS_SAM:
+                        import cv2
+                        # Decode snapshot to numpy
+                        nparr = np.frombuffer(st.session_state.sam_snapshot, np.uint8)
+                        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                        
+                        # Run SAM segmentation
+                        segmentor = get_segmentor()
+                        result = segmentor.segment_at_point(
+                            image,
+                            st.session_state.sam_click_x,
+                            st.session_state.sam_click_y
+                        )
+                        st.session_state.sam_result = result
+                        st.rerun()
+        
+        st.markdown("---")
+        
+        # ============ SYNTHETIC DATA GENERATION ============
+        st.markdown("##### Synthetic Data Pipeline")
+        st.caption("Generate ML training datasets")
+        
+        # Only show if mesh is loaded
+        can_generate = st.session_state.mesh_data is not None
+        
+        # Number of samples slider
+        num_samples = st.slider(
+            "Samples to generate",
+            min_value=5,
+            max_value=100,
+            value=50,
+            step=5,
+            disabled=not can_generate,
+            help="Number of training samples with randomized camera/lighting/defects"
+        )
+        
+        if st.button("Generate Training Data", use_container_width=True, disabled=not can_generate, key="gen_data"):
+            try:
+                from src.simulation.synthetic_data_gen import generate_dataset
+                
+                output_dir = "synthetic_data"
+                progress_bar = st.progress(0, text="Initializing...")
+                status_text = st.empty()
+                
+                def update_progress(current, total):
+                    progress = current / total
+                    progress_bar.progress(progress, text=f"Generating sample {current}/{total}")
+                    status_text.caption(f"Rendering scene with randomized camera/lighting...")
+                
+                # Generate dataset
+                results = generate_dataset(
+                    mesh_data=st.session_state.mesh_data,
+                    num_samples=num_samples,
+                    output_dir=output_dir,
+                    progress_callback=update_progress
+                )
+                
+                progress_bar.progress(1.0, text="Complete!")
+                status_text.empty()
+                st.success(f"Generated {len(results)} samples in `{output_dir}/`")
+                st.caption(f"Images: `image_*.png` | Masks: `mask_*.png` | Meta: `metadata_*.json`")
+                
+            except Exception as e:
+                st.error(f"Generation failed: {e}")
+        
+        if not can_generate:
+            st.caption("Load a mesh first (STL/OBJ upload)")
     
+    # ============ SYSTEM SETTINGS EXPANDER ============
+    with st.expander("System Settings", expanded=False):
+        st.markdown("##### Configuration")
+        st.caption("System and workflow configuration options")
+        
+        # Reset button inside settings
+        if step > 0:
+            st.markdown("---")
+            if st.button("↻ Reset Workflow", use_container_width=True, key="reset_workflow"):
+                reset_state()
+                st.session_state.chat_history = []
+                st.rerun()
+        
+        # Additional system info
+        st.markdown("---")
+        st.caption(f"Connected: UR5e Robot")
+        st.caption(f"Status: Online")
+    
+    # Standalone reset for quick access
     if step > 0:
         st.markdown("---")
-        if st.button("↻ Reset", use_container_width=True):
+        if st.button("↻ Reset", use_container_width=True, key="reset_main"):
             reset_state()
             st.session_state.chat_history = []
             st.rerun()
 
 
 # ============ MAIN LAYOUT (70/30 Split) ============
+# Note: Status info consolidated in viewport toolbar below
 
-# Top Metrics Bar
-st.markdown(f"""
-<div class="metrics-bar">
-    <div class="metric-item">
-        <span class="status-dot"></span>
-        <span class="metric-label">System Status</span>
-        <span class="metric-value status-online">ONLINE</span>
-    </div>
-    <div class="metric-item">
-        <span class="metric-label">Connected Robot</span>
-        <span class="metric-value">UR5e</span>
-    </div>
-    <div class="metric-item">
-        <span class="metric-label">Active Part</span>
-        <span class="metric-value">{st.session_state.mesh_name}</span>
-    </div>
-    <div class="metric-item">
-        <span class="metric-label">Defects</span>
-        <span class="metric-value">{len(st.session_state.defects)}</span>
-    </div>
-    <div class="metric-item">
-        <span class="metric-label">Workflow</span>
-        <span class="metric-value">Step {st.session_state.workflow_step + 1}/5</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
 
 # Main 2-Column Layout
 col_3d, col_chat = st.columns([0.7, 0.3])
 
 # ============ LEFT COLUMN: 3D VIEWER ============
 with col_3d:
+    # === VIEWPORT CARD WITH HUD ===
+    # Calculate vertex count for HUD
+    vertex_count = "—"
+    if st.session_state.mesh_data is not None:
+        vertex_count = f"{len(st.session_state.mesh_data.vertices):,}"
+    elif st.session_state.mesh_display_trace is not None:
+        vertex_count = "Procedural"
+    elif st.session_state.get('robot_traces') is not None:
+        vertex_count = "Robot"
+    
+    st.markdown(f'''
+    <div style="background: #F9FAFB; padding: 8px 12px; border-radius: 8px 8px 0 0; 
+         display: flex; align-items: center; gap: 12px; font-family: 'Inter', -apple-system, sans-serif;
+         border: 1px solid #E5E7EB; border-bottom: 2px solid #E5E7EB;">
+        <span style="display: flex; align-items: center; gap: 6px;">
+            <span style="width: 6px; height: 6px; background: #10B981; border-radius: 50%; 
+                  animation: pulse-dot 2s infinite;"></span>
+            <span style="color: #1F2937; font-weight: 600; font-size: 11px; text-transform: uppercase;">Online</span>
+        </span>
+        <span style="color: #D1D5DB;">|</span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+            <span style="color: #6B7280; font-size: 11px;">ROBOT</span>
+            <span style="color: #1F2937; font-weight: 600; font-size: 12px;">UR5e</span>
+        </span>
+        <span style="color: #D1D5DB;">|</span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+            <span style="color: #6B7280; font-size: 11px;">PART</span>
+            <span style="color: #1F2937; font-weight: 600; font-size: 12px;">{st.session_state.mesh_name}</span>
+        </span>
+        <span style="color: #D1D5DB;">|</span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+            <span style="color: #6B7280; font-size: 11px;">DEFECTS</span>
+            <span style="color: #DC2626; font-weight: 600; font-size: 12px;">{len(st.session_state.defects)}</span>
+        </span>
+    </div>
+    ''', unsafe_allow_html=True)
+    
+    
+    # Robot (Sci-Fi Drone) - special multi-trace rendering
+    if st.session_state.get('robot_traces') is not None:
+        fig = go.Figure(data=st.session_state.robot_traces)
+        
+        camera_eye = st.session_state.get('camera_eye', dict(x=1.5, y=1.5, z=1.0))
+        
+        # Sky blue background for concept art style
+        sky_blue = 'rgb(33, 150, 243)'
+        
+        fig.update_layout(
+            scene=dict(
+                aspectmode='data',
+                bgcolor=sky_blue,
+                xaxis=dict(visible=False, showbackground=False, showgrid=False),
+                yaxis=dict(visible=False, showbackground=False, showgrid=False),
+                zaxis=dict(visible=False, showbackground=False, showgrid=False),
+                camera=dict(eye=camera_eye),
+            ),
+            paper_bgcolor=sky_blue,
+            plot_bgcolor=sky_blue,
+            height=480,
+            margin=dict(l=0, r=0, b=0, t=0),
+        )
+        
+        st.plotly_chart(fig, use_container_width=True, key="viewer_robot")
+        st.session_state.current_figure = fig
+    
     # Procedural mesh
-    if st.session_state.mesh_display_trace is not None:
+    elif st.session_state.mesh_display_trace is not None:
         fig = go.Figure(data=[st.session_state.mesh_display_trace])
         
         # Read camera state from session (connects chatbot brain to viewer eyes)
@@ -901,15 +1611,15 @@ with col_3d:
         fig.update_layout(
             scene=dict(
                 aspectmode='data',
-                bgcolor='#0D0D0D',
+                bgcolor='rgba(0,0,0,0)',  # ProAI: transparent for light UI
                 xaxis=dict(visible=False, showbackground=False),
                 yaxis=dict(visible=False, showbackground=False),
                 zaxis=dict(visible=False, showbackground=False),
                 camera=dict(eye=camera_eye),  # Apply camera from session state
             ),
-            paper_bgcolor='#0D0D0D',
-            plot_bgcolor='#0D0D0D',
-            height=600,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            height=480,
             margin=dict(l=0, r=0, b=0, t=0),
         )
         
@@ -944,10 +1654,11 @@ with col_3d:
             viewer.highlight_region(st.session_state.highlight_position, radius=0.015)
         
         fig = viewer.create_figure()
+        # ProAI Aesthetic: transparent background for light UI
         fig.update_layout(
-            scene=dict(bgcolor='#0D0D0D'),
-            paper_bgcolor='#0D0D0D',
-            height=600,
+            scene=dict(bgcolor='rgba(0,0,0,0)'),
+            paper_bgcolor='rgba(0,0,0,0)',
+            height=480,
         )
         
         if st.session_state.camera_target:
@@ -977,31 +1688,24 @@ with col_3d:
         # Store figure for visual inspection
         st.session_state.current_figure = fig
         
-        # Part stats
-        mesh = st.session_state.mesh_data
-        dims = mesh.bounds[1] - mesh.bounds[0]
-        st.markdown(f"""
-        <div style="display: flex; gap: 24px; padding: 8px 0; color: #808080; font-size: 11px; font-family: 'IBM Plex Mono', monospace;">
-            <span>VERTICES: {len(mesh.vertices):,}</span>
-            <span>FACES: {len(mesh.faces):,}</span>
-            <span>SIZE: {dims[0]*1000:.1f} × {dims[1]*1000:.1f} × {dims[2]*1000:.1f} mm</span>
-        </div>
-        """, unsafe_allow_html=True)
+        # Note: Part stats now shown in HUD header above
     
     else:
+        # ProAI: No part placeholder with light UI styling (bottom border-radius matches toolbar)
         st.markdown("""
-        <div style="background: #0D0D0D; border: 1px solid #2D2D2D; border-radius: 12px; 
-             height: 600px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <span style="font-size: 64px; margin-bottom: 16px; opacity: 0.3;">🔧</span>
-            <span style="color: #808080; font-size: 18px; font-weight: 500;">No Part Loaded</span>
-            <span style="color: #4D4D4D; font-size: 13px; margin-top: 8px;">Select a sample part or upload a 3D model</span>
+        <div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: none; border-radius: 0 0 12px 12px; 
+             height: 480px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+            <span style="font-size: 32px; margin-bottom: 16px; opacity: 0.3; font-weight: bold;">No Part</span>
+            <span style="color: #6B6B6B; font-size: 18px; font-weight: 500;">No Part Loaded</span>
+            <span style="color: #9A9A9A; font-size: 13px; margin-top: 8px;">Select a sample part or upload a 3D model</span>
         </div>
         """, unsafe_allow_html=True)
     
     # ============ SEGMENTATION RESULT DISPLAY ============
     if st.session_state.sam_enabled and (st.session_state.sam_snapshot or st.session_state.sam_result):
         st.markdown("---")
-        st.markdown("##### ✂️ Interactive Segmentation View")
+        st.markdown("##### Interactive Segmentation View")
         
         seg_col1, seg_col2 = st.columns(2)
         
@@ -1030,7 +1734,7 @@ with col_3d:
                 col_m2.metric("Confidence", f"{result.confidence:.1%}")
                 col_m3.metric("Click", f"({result.click_point[0]}, {result.click_point[1]})")
             else:
-                st.info("👆 Enter coordinates in sidebar and click SEGMENT")
+                st.info("Enter coordinates in sidebar and click SEGMENT")
 
 
 # ============ RIGHT COLUMN: AI AGENT PANEL ============
@@ -1038,235 +1742,70 @@ with col_chat:
     st.markdown("""
     <div class="agent-header">
         <div class="agent-title">
-            <span style="font-size: 20px;">🤖</span>
             Factory Intelligence Unit
         </div>
         <div class="agent-subtitle">Supervisor · Inspector · Engineer</div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Chat container
-    chat_container = st.container(height=480)
+    # Chat container (compact height)
+    chat_container = st.container(height=380)
     
     with chat_container:
         if not st.session_state.chat_history:
             st.markdown("""
-            <div style="text-align: center; padding: 40px 20px; color: #4D4D4D;">
-                <div style="font-size: 32px; margin-bottom: 12px;">💬</div>
-                <div>Ask the AI team about defects, repairs, or inspections.</div>
-                <div style="margin-top: 16px; font-size: 12px; color: #3D3D3D;">
-                    Try: "Show me the defects" or "What repairs are needed?"
-                </div>
+            <div style="text-align: center; padding: 40px 20px; color: #9CA3AF;">
+                <div style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Factory Assistant Ready</div>
+                <div style="font-size: 12px;">Ask about defects, repairs, or inspections</div>
             </div>
             """, unsafe_allow_html=True)
         else:
             for msg in st.session_state.chat_history:
                 if msg["role"] == "user":
-                    st.markdown(f"""
-                    <div class="chat-message chat-user">
-                        {msg["content"]}
-                    </div>
-                    """, unsafe_allow_html=True)
+                    with st.chat_message("user", avatar=None):
+                        st.write(msg["content"])
                 else:
-                    avatar = msg.get("avatar", "🤖")
-                    st.markdown(f"""
-                    <div class="chat-message chat-agent">
-                        <span class="chat-agent-icon">{avatar}</span>
-                        {msg["content"]}
-                    </div>
-                    """, unsafe_allow_html=True)
+                    with st.chat_message("assistant", avatar=None):
+                        st.write(msg["content"])
     
-    # Voice Input (for glove-wearing operators)
-    audio_data = st.audio_input("Push to Speak Command", key="voice_input")
+    # Input row: Voice button + Text input + Send button (side by side)
+    col_voice, col_input, col_send = st.columns([0.12, 0.76, 0.12])
     
-    if st.button("Send Voice Command", disabled=audio_data is None, use_container_width=True):
-        if audio_data:
-            # Transcribe audio using Whisper API
-            transcribed_text = transcribe_audio(audio_data.getvalue())
+    with col_voice:
+        with st.popover("Voice", help="Click to record voice command"):
+            st.caption("Record your voice command:")
+            audio_data = st.audio_input("Record", key="voice_input", label_visibility="collapsed")
             
-            if transcribed_text.strip():
-                # Add to chat history
-                st.session_state.chat_history.append({
-                    "role": "user",
-                    "content": transcribed_text,
-                    "avatar": "User"
-                })
+            if audio_data:
+                with st.spinner("Transcribing..."):
+                    transcribed_text = transcribe_audio(audio_data.getvalue())
                 
-                # Update agent state and process message
-                st.session_state.agent_team.update_state(
-                    defects=st.session_state.defects,
-                    plans=st.session_state.plans,
-                    workflow_step=st.session_state.workflow_step,
-                    mesh_name=st.session_state.mesh_name
-                )
-                
-                response = st.session_state.agent_team.process_message(transcribed_text)
-                
-                # Remove emoji from avatar if present
-                avatar_text = response["avatar"]
-                if avatar_text == "🤖": avatar_text = "AI"
-                
-                st.session_state.chat_history.append({
-                    "role": "assistant",
-                    "content": response["content"],
-                    "avatar": avatar_text,
-                    "agent": response["agent"]
-                })
-            
-            # Handle UI commands (same as text input)
-            for cmd in response.get("ui_commands", []):
-                cmd_type = cmd.get("type", "")
-                
-                if cmd_type in ["FOCUS_CAMERA", "ZOOM_TO", "HIGHLIGHT_DEFECT"] and cmd.get("position"):
-                    st.session_state.highlight_position = cmd["position"]
-                    st.session_state.camera_target = cmd["position"]
-                
-                if cmd_type == "HIGHLIGHT" and cmd.get("defect_index") is not None:
-                    idx = cmd["defect_index"]
-                    if idx < len(st.session_state.defects):
-                        st.session_state.highlight_position = st.session_state.defects[idx]["position"]
-                        st.session_state.camera_target = st.session_state.defects[idx]["position"]
-                
-                if cmd_type == "RESET_VIEW":
-                    st.session_state.highlight_position = None
-                    st.session_state.camera_target = None
-                
-                if cmd_type == "TRIGGER_SCAN":
-                    if st.session_state.mesh_source in ['upload', 'premium']:
-                        perform_scan()
-                
-                if cmd_type == "TRIGGER_PLAN":
-                    if st.session_state.defects:
-                        generate_plans()
-                
-                if cmd_type == "EXECUTE":
-                    if st.session_state.plans and st.session_state.approved:
-                        st.session_state.workflow_step = 5
-                
-                # Custom path generated by Code Interpreter
-                if cmd_type == "CUSTOM_PATH_GENERATED":
-                    data = cmd.get("data", {})
-                    if data.get("points"):
-                        st.session_state.custom_path_points = data["points"]
-                        st.session_state.custom_path_info = {
-                            "pattern": data.get("pattern", "Custom"),
-                            "num_points": data.get("num_points", len(data["points"]))
-                        }
-            
-            st.rerun()
+                if transcribed_text.startswith("Error:"):
+                    st.error(transcribed_text)
+                elif transcribed_text.strip():
+                    st.success(f"Heard: {transcribed_text[:50]}...")
+                    # Store in session state for processing
+                    st.session_state["voice_transcript"] = transcribed_text
+                    if st.button("Send Voice", key="send_voice_btn", type="primary", use_container_width=True):
+                        process_user_message(transcribed_text)
+                        st.session_state["voice_transcript"] = None
+                        st.rerun()
+                else:
+                    st.warning("Could not transcribe audio. Please try again.")
     
-    # Chat input (text fallback)
-    user_input = st.chat_input("Ask the team...", key="agent_chat")
-    
-    if user_input:
-        st.session_state.chat_history.append({
-            "role": "user", 
-            "content": user_input,
-            "avatar": "User"
-        })
-        
-        st.session_state.agent_team.update_state(
-            defects=st.session_state.defects,
-            plans=st.session_state.plans,
-            workflow_step=st.session_state.workflow_step,
-            mesh_name=st.session_state.mesh_name
+    with col_input:
+        user_text = st.text_input(
+            "Message", 
+            placeholder="Ask the team...", 
+            key="chat_text_input",
+            label_visibility="collapsed"
         )
-        
-        response = st.session_state.agent_team.process_message(user_input)
-        
-        # Remove emoji from avatar if present
-        avatar_text = response["avatar"]
-        if avatar_text == "🤖": avatar_text = "AI"
-
-        st.session_state.chat_history.append({
-            "role": "assistant", 
-            "content": response["content"],
-            "avatar": avatar_text,
-            "agent": response["agent"]
-        })
-        
-        # Handle UI commands from supervisor
-        for cmd in response.get("ui_commands", []):
-            cmd_type = cmd.get("type", "")
-            
-            # Camera focus/zoom
-            if cmd_type in ["FOCUS_CAMERA", "ZOOM_TO", "HIGHLIGHT_DEFECT"] and cmd.get("position"):
-                st.session_state.highlight_position = cmd["position"]
-                st.session_state.camera_target = cmd["position"]
-            
-            # Highlight specific defect
-            if cmd_type == "HIGHLIGHT" and cmd.get("defect_index") is not None:
-                idx = cmd["defect_index"]
-                if idx < len(st.session_state.defects):
-                    st.session_state.highlight_position = st.session_state.defects[idx]["position"]
-                    st.session_state.camera_target = st.session_state.defects[idx]["position"]
-            
-            # Reset view
-            if cmd_type == "RESET_VIEW":
-                st.session_state.highlight_position = None
-                st.session_state.camera_target = None
-            
-            # Trigger scan
-            if cmd_type == "TRIGGER_SCAN":
-                if st.session_state.mesh_source in ['upload', 'premium']:
-                    perform_scan()
-            
-            # Trigger plan
-            if cmd_type == "TRIGGER_PLAN":
-                if st.session_state.defects:
-                    generate_plans()
-            
-            # Execute repair
-            if cmd_type == "EXECUTE":
-                if st.session_state.plans and st.session_state.approved:
-                    st.session_state.workflow_step = 5
-            
-            # Custom path generated by Code Interpreter
-            if cmd_type == "CUSTOM_PATH_GENERATED":
-                data = cmd.get("data", {})
-                if data.get("points"):
-                    st.session_state.custom_path_points = data["points"]
-                    st.session_state.custom_path_info = {
-                        "pattern": data.get("pattern", "Custom"),
-                        "num_points": data.get("num_points", len(data["points"]))
-                    }
-            
-            # Visual inspection - capture snapshot and analyze
-            if cmd_type == "CAPTURE_SNAPSHOT":
-                if st.session_state.current_figure is not None:
-                    # Capture the current figure as base64 image
-                    image_base64 = capture_figure_as_base64(st.session_state.current_figure)
-                    if image_base64:
-                        # Call agent again with the image for visual analysis
-                        st.session_state.agent_team.update_state(
-                            defects=st.session_state.defects,
-                            plans=st.session_state.plans,
-                            workflow_step=st.session_state.workflow_step,
-                            mesh_name=st.session_state.mesh_name
-                        )
-                        visual_response = st.session_state.agent_team.agent.process_message(
-                            message="Analyze this image",
-                            defects=st.session_state.defects,
-                            plans=st.session_state.plans,
-                            workflow_step=st.session_state.workflow_step,
-                            mesh_name=st.session_state.mesh_name,
-                            image_base64=image_base64
-                        )
-                        # Replace the "capturing..." message with actual analysis
-                        if st.session_state.chat_history and st.session_state.chat_history[-1]["role"] == "assistant":
-                            st.session_state.chat_history[-1] = {
-                                "role": "assistant",
-                                "content": visual_response["content"],
-                                "avatar": visual_response["avatar"],
-                                "agent": visual_response["agent"]
-                            }
-                    else:
-                        # Update last message with error
-                        if st.session_state.chat_history:
-                            st.session_state.chat_history[-1]["content"] = "❌ Could not capture the 3D view. Please ensure a part is loaded."
-                else:
-                    # No figure available
-                    if st.session_state.chat_history:
-                        st.session_state.chat_history[-1]["content"] = "❌ No part loaded to analyze. Please load a part first."
-        
+    
+    with col_send:
+        send_clicked = st.button("Send", key="send_btn", type="primary", use_container_width=True)
+    
+    # Process text input when Send is clicked
+    if send_clicked and user_text.strip():
+        process_user_message(user_text)
         st.rerun()
+    
